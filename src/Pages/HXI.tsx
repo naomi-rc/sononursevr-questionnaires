@@ -32,7 +32,7 @@ const HXI = () => {
     <div className="App">
       <form 
         method="POST" 
-        action="https://script.google.com/macros/s/AKfycbxQc49yqrqKNqIdFrxOjqlNUnOSQY5ir4dtJpTGQWhpv6hd5FZXdA29tjmUQrENqZWh/exec"
+        action="https://script.google.com/macros/s/AKfycbx8iu-Eb7Hp2SpZcqLHI5loBdNqq9OZPmZ9DioMa8Hmn_uZMIrO2F-cRojsDNLbSO3d/exec"
       >
 
         <div className="header">
@@ -40,7 +40,7 @@ const HXI = () => {
 
           <h3 className="participant-id-section participant-id">
           <label htmlFor="participant-id">{info && info.participantid}</label>
-          <input type="number" min="0" />
+          <input name="ParicipantID" type="number" min="0" />
           </h3>
         </div>
       
@@ -71,21 +71,21 @@ const HXI = () => {
                   </tr>
                   <tr className="question-entry">
                     <td></td>
-                    <td><input type="radio" name={index.toString()} value="1"/></td>
-                    <td><input type="radio" name={index.toString()} value="2"/></td>
-                    <td><input type="radio" name={index.toString()} value="3"/></td>
-                    <td><input type="radio" name={index.toString()} value="4"/></td>
-                    <td><input type="radio" name={index.toString()} value="5"/></td>
-                    <td><input type="radio" name={index.toString()} value="6"/></td>
-                    <td><input type="radio" name={index.toString()} value="7"/></td>
+                    <td><input type="radio" name={`Q${index}`} value="0"/></td>
+                    <td><input type="radio" name={`Q${index}`} value="1"/></td>
+                    <td><input type="radio" name={`Q${index}`} value="2"/></td>
+                    <td><input type="radio" name={`Q${index}`} value="3"/></td>
+                    <td><input type="radio" name={`Q${index}`} value="4"/></td>
+                    <td><input type="radio" name={`Q${index}`} value="5"/></td>
+                    <td><input type="radio" name={`Q${index}`} value="6"/></td>
                   </tr>
                 </>
               ))
             }
           </tbody>
         </table>
-
-        <button type="button" className="button btn btn-primary">{info && info.submit}</button>
+        <input hidden name="Language" value={slug}/>
+        <button type="submit" className="button">{info && info.submit}</button>
 
       </form>
       
