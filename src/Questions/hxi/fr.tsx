@@ -1,11 +1,21 @@
-const FR = {
-  "title" : "HXI",
-  "participantid" : "ID du Participant :",
-  "instructions" : "Une série de déclarations vous sera présentée. Veuillez sélectionner l'option qui reflète le mieux votre niveau d'accord avec chaque énoncé concernant votre expérience de jeu qui vient d'être décrite.",
-  "clarityDescription" : "Pour plus de clarté, veuillez consulter les définitions suivantes :",
-  "hapticSensationsDefinition" : "Sensations haptiques : Tout ce que vous ressentez avec le sens du toucher. Il peut s'agir de vibrations, de force, de température, de pression ou de toute autre sensation physique.",
-  "otherSensesDefinition" : "Autres sens : modalités sensorielles au-delà du toucher, telles que la vision et l'ouïe.",
-
+const HXI_FR = {
+  "info" : {
+    "title" : "HXI",
+    "participantid" : "ID du Participant : ",
+    "instructions" : "Une série de déclarations vous sera présentée. Veuillez sélectionner l'option qui reflète le mieux votre niveau d'accord avec chaque énoncé concernant votre expérience de jeu qui vient d'être décrite.",
+    "clarityDescription" : "Pour plus de clarté, veuillez consulter les définitions suivantes :",
+    "hapticSensationsDefinition" : "Sensations haptiques : Tout ce que vous ressentez avec le sens du toucher. Il peut s'agir de vibrations, de force, de température, de pression ou de toute autre sensation physique.",
+    "otherSensesDefinition" : "Autres sens : modalités sensorielles au-delà du toucher, telles que la vision et l'ouïe.",
+    },
+  "agreementLevel" :[
+    "Fortement en désaccord",
+    "En désaccord",
+    "Plutôt en désaccord",
+    "Ni d’accord ni en désaccord",
+    "Plutôt d’accord",
+    "D’accord",
+    "Tout à fait d’accord"
+  ],
   "questions" : 
   ["Les sensations haptiques imitaient fidèlement les expériences auxquelles je m'attendrais dans la réalité.",
   "Les interactions haptiques m'ont rendu plus concentré.",
@@ -28,4 +38,4 @@ const FR = {
   "Quelle que soit la fonction, j'ai trouvé les sensations haptiques agréables.",
   "J'ai ressenti une sensation d'harmonie entre les sensations haptiques et les autres sens."]
 }
-export default FR;
+export default HXI_FR;

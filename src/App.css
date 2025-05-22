@@ -84,12 +84,22 @@ input[type="radio"]:checked::after {
 .participant-id {
   margin-bottom: 2rem;
 }
-/* .questionnaire-title {
-  display: inline;
-  text-align: left;
-} */
+.tab1 {
+  tab-size: 2;
+}
+.tab2 {
+  tab-size: 4;
+}
 
-/* .participant-id-section {
-  display: inline;
-  text-align: right;
-} */
+.tab4 {
+  tab-size: 8;
+}
+.indent {
+  margin-left: 2em; /* Control the tab size with this value */
+}
+.line {
+  width: 800%; /* set the desired length of the line */
+  height: 1px; /* set the height of the line */
+  background-color: black; /* set the color of the line */
+  margin:0 auto;
+}

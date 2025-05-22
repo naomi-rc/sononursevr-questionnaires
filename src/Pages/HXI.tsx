@@ -11,13 +11,9 @@ const HXI = () => {
 //const defaultLocale = localStorage['locale'] ? localStorage['locale'] : 'en';
 //const [locale, setLocale] = React.useState(defaultLocale);
 
-  const [title, setTitle] = React.useState<string | undefined>(); 
-  const [instructions, setInstructions] = React.useState<string | undefined>(); 
-  const [participantidlabel, setParticipantidlabel] = React.useState<string | undefined>(); 
-  const [clarityDescription, setClarityDescription] = React.useState<string | undefined>(); 
-  const [hapticSensationsDefinition, setHapticSensesDefinition] = React.useState<string | undefined>();  
-  const [otherSensesDefinition, setOtherSensesDefinition] = React.useState<string | undefined>();  
+  const [info, setInfo] = React.useState<any>(); 
   const [questions, setQuestions] = React.useState<string[] | undefined>(); 
+  const [agreementLevel, setAgreementLevel] = React.useState<string[] | undefined>(); 
 
   const { slug } = useParams();
 
@@ -29,24 +25,14 @@ const HXI = () => {
   
   useEffect(() => {
     if(slug=='fr'){
-      //changeLocale('fr');
       setQuestions(HXI_FR.questions);
-      setTitle(HXI_FR.title);
-      setInstructions(HXI_FR.instructions);
-      setParticipantidlabel(HXI_FR.participantid);
-      setClarityDescription(HXI_FR.clarityDescription);
-      setHapticSensesDefinition(HXI_FR.hapticSensationsDefinition);
-      setOtherSensesDefinition(HXI_FR.otherSensesDefinition);
+      setInfo(HXI_FR.info);
+      setAgreementLevel(HXI_FR.agreementLevel);
     }
     else{
-      //changeLocale('en');
       setQuestions(HXI_EN.questions);
-      setTitle(HXI_EN.title);
-      setInstructions(HXI_EN.instructions);
-      setParticipantidlabel(HXI_EN.participantid);
-      setClarityDescription(HXI_EN.clarityDescription);
-      setHapticSensesDefinition(HXI_EN.hapticSensationsDefinition);
-      setOtherSensesDefinition(HXI_EN.otherSensesDefinition);
+      setInfo(HXI_EN.info);
+      setAgreementLevel(HXI_EN.agreementLevel);
     }
   }, [slug]);
 
@@ -54,52 +40,52 @@ const HXI = () => {
     
     <div className="App">
       
-      {/* <h1>{defaultLocale == 'en'? EN[0] : FR[0]}</h1> */}
-
       <div className="header">
-        <h4 className="questionnaire-title">HXI</h4>
+        <h3 className="questionnaire-title">{info && info.title}</h3>
 
-        <h4 className="participant-id-section participant-id">
-          <label htmlFor="participant-id">Participant ID: </label>
+        <h3 className="participant-id-section participant-id">
+          <label htmlFor="participant-id">{info && info.participantid}</label>
           <input type="number" />
-        </h4>
+        </h3>
       </div>
       
       <div className="questionnaire-description">
-        <p>{instructions}</p>
+        <p>{info && info.instructions}</p>
+        <p>{info && info.clarityDescription}</p>
+        <p className="indent">{info && info.hapticSensationsDefinition}</p>
+        <p className="indent">{info && info.otherSensesDefinition}</p>
       </div>
       
 
       <table width="100%">
         <thead>
           <tr>
-            <th className="question"></th>
-            <th>Strongly Disagree</th>
-            <th>Disagree</th>
-            <th>Somewhat Disagree</th>
-            <th>Neither Agree Nor Disagree</th>
-            <th>Somewhat Agree</th>
-            <th>Agree</th>
-            <th>Strongly Agree</th>
+            <th key="empty"></th>
+            {agreementLevel && agreementLevel.map((level, index) => (
+              <th key={index}>{agreementLevel[index]}</th>
+            ))}
+            
           </tr>
+          <hr className="line"/>
         </thead>
         <tbody>
           {
             questions && questions.map((question, index) => (
               <>
                 <tr>
-                  <td width="(100)%" className="question" colSpan={7}>{question}</td>
+                  <td className="question" colSpan={7}>{question}</td>
                 </tr>
                 <tr>
-                  <td width="(100/8)%"> </td>
-                  <td width="(100/8)%"><input type="radio" name={index.toString()} value="1"/></td>
-                  <td width="(100/8)%"><input type="radio" name={index.toString()} value="2"/></td>
-                  <td width="(100/8)%"><input type="radio" name={index.toString()} value="3"/></td>
-                  <td width="(100/8)%"><input type="radio" name={index.toString()} value="4"/></td>
-                  <td width="(100/8)%"><input type="radio" name={index.toString()} value="5"/></td>
-                  <td width="(100/8)%"><input type="radio" name={index.toString()} value="6"/></td>
-                  <td width="(100/8)%"><input type="radio" name={index.toString()} value="7"/></td>
+                  <td></td>
+                  <td><input type="radio" name={index.toString()} value="1"/></td>
+                  <td><input type="radio" name={index.toString()} value="2"/></td>
+                  <td><input type="radio" name={index.toString()} value="3"/></td>
+                  <td><input type="radio" name={index.toString()} value="4"/></td>
+                  <td><input type="radio" name={index.toString()} value="5"/></td>
+                  <td><input type="radio" name={index.toString()} value="6"/></td>
+                  <td><input type="radio" name={index.toString()} value="7"/></td>
                 </tr>
+                <hr className="line"/>
               </>
             ))
           }
