@@ -11,9 +11,9 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path="/" Component={Home} />
-        <Route path="/hxi" Component={HXI} />
-        <Route path="/nasa-tlx" Component={NASATLX} />
+      <Route path="/" element={<Home/>} />
+        <Route path="/hxi/:slug" element={<HXI/>} />
+        <Route path="/nasa-tlx" element={<NASATLX/>} />
     </Routes>
       
     </BrowserRouter>
