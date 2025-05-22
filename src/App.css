@@ -41,13 +41,19 @@
 body {
   font-family: Arial, sans-serif;
   margin: 2rem;
+  padding : 2rem;
 }
 table {
-  border: none;
+  border-collapse: collapse;
   table-layout: fixed;
+  margin-bottom: 2em;
 }
-th, td {
-  border: none; /* Optional: Ensures there are no borders around individual cells */
+th {
+  font-weight: normal;
+  font-size: small;
+}
+.question-entry {
+  border-bottom: 0.1em solid black; 
 }
 .questionnaire-description {
   text-align: left;
@@ -55,15 +61,16 @@ th, td {
 }
 .question {
   text-align: left;
+  line-height: 1.5em;
 }
 input[type="radio"] {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   border: 2px solid #666;
-  border-radius: 3px;
+  border-radius: 2px;
   display: inline-block;
   position: relative;
   margin: 0;
@@ -84,16 +91,6 @@ input[type="radio"]:checked::after {
 .participant-id {
   margin-bottom: 2rem;
 }
-.tab1 {
-  tab-size: 2;
-}
-.tab2 {
-  tab-size: 4;
-}
-
-.tab4 {
-  tab-size: 8;
-}
 .indent {
   margin-left: 2em; /* Control the tab size with this value */
 }
@@ -102,4 +99,18 @@ input[type="radio"]:checked::after {
   height: 1px; /* set the height of the line */
   background-color: black; /* set the color of the line */
   margin:0 auto;
+}
+.button {
+  width: 30%;
+  height: 2em;
+  font-size:large;
+  background-color: lightblue;
+  border-radius: 3px;
+}
+
+.button:hover{
+    background-color: rgb(157, 196, 210);
+}
+.button:active {
+    background-color: rgb(169, 220, 238);
 }
