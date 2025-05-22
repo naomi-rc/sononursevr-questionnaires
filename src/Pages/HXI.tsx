@@ -4,27 +4,32 @@ import { useParams } from 'react-router-dom';
 import HXI_EN from "../Questions/hxi/en";
 import HXI_FR from "../Questions/hxi/fr";
 
+type Question = {[key: string]: any};
 
 const HXI = () => {
 
   const [info, setInfo] = React.useState<any>(); 
-  const [questions, setQuestions] = React.useState<string[] | undefined>(); 
+  const [questions, setQuestions] = React.useState<{}[] | undefined>(); 
   const [agreementLevel, setAgreementLevel] = React.useState<string[] | undefined>(); 
 
-  const { slug } = useParams();
+  const {lang, id, trial, hapticCase } = useParams();
+
+  const shuffle = (array: Question[]) => { 
+    return array.sort(() => Math.random() - 0.5); 
+}; 
   
   useEffect(() => {
-    if(slug==='fr'){
-      setQuestions(HXI_FR.questions);
+    if(lang==='fr'){
+      setQuestions(shuffle(HXI_FR.questions));
       setInfo(HXI_FR.info);
       setAgreementLevel(HXI_FR.agreementLevel);
     }
     else{
-      setQuestions(HXI_EN.questions);
+      setQuestions(shuffle(HXI_EN.questions));
       setInfo(HXI_EN.info);
       setAgreementLevel(HXI_EN.agreementLevel);
     }
-  }, [slug]);
+  }, [lang]);
 
   return (
     
@@ -39,7 +44,7 @@ const HXI = () => {
 
           <h3 className="participant-id-section participant-id">
           <label htmlFor="participant-id">{info && info.participantid}</label>
-          <input name="ParicipantID" type="number" min="0" />
+          <input name="ParicipantID" type="number" min="0" value={id}/>
           </h3>
         </div>
       
@@ -63,27 +68,34 @@ const HXI = () => {
           </thead>
           <tbody>
             {
-              questions && questions.map((question, index) => (
-                <>
-                  <tr>
-                    <td className="question" colSpan={7}>{question}</td>
-                  </tr>
-                  <tr className="question-entry">
-                    <td></td>
-                    <td><input type="radio" name={`Q${index}`} value="0"/></td>
-                    <td><input type="radio" name={`Q${index}`} value="1"/></td>
-                    <td><input type="radio" name={`Q${index}`} value="2"/></td>
-                    <td><input type="radio" name={`Q${index}`} value="3"/></td>
-                    <td><input type="radio" name={`Q${index}`} value="4"/></td>
-                    <td><input type="radio" name={`Q${index}`} value="5"/></td>
-                    <td><input type="radio" name={`Q${index}`} value="6"/></td>
-                  </tr>
-                </>
-              ))
+              questions && questions.map((question: Question, index) => {
+                const [key, value] = Object.entries(question)[0];
+
+                return (
+                  <React.Fragment key={index}>
+                    <tr>
+                      <td className={`question Q${key}`} colSpan={7}>
+                        {value} {/* this is the question text */}
+                      </td>
+                    </tr>
+                    <tr className="question-entry">
+                      <td></td>
+                      {[...Array(7)].map((_, score) => (
+                        <td key={score}>
+                          <input type="radio" name={`Q${key}`} value={score} />
+                        </td>
+                      ))}
+                    </tr>
+                  </React.Fragment>
+                );
+              })
             }
           </tbody>
         </table>
-        <input hidden name="Language" value={slug}/>
+        <input hidden readOnly name="Language" value={lang}/>
+        <input hidden readOnly name="Trial" value={trial}/>
+        <input hidden readOnly name="HapticCase" value={hapticCase}/>
+        <input hidden readOnly name="QuestionsOrder" value={questions?.map(q => Object.keys(q)[0]).join(',')}/>
         <button type="submit" className="button">{info && info.submit}</button>
 
       </form>
