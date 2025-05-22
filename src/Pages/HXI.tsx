@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import '../App.css';
 import { useParams } from 'react-router-dom';
 import HXI_EN from "../Questions/hxi/en";
 import HXI_FR from "../Questions/hxi/fr";
-import Button from 'react-bootstrap/Button';
 
 
 const HXI = () => {
@@ -15,7 +14,7 @@ const HXI = () => {
   const { slug } = useParams();
   
   useEffect(() => {
-    if(slug=='fr'){
+    if(slug==='fr'){
       setQuestions(HXI_FR.questions);
       setInfo(HXI_FR.info);
       setAgreementLevel(HXI_FR.agreementLevel);
