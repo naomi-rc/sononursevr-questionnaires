@@ -10,9 +10,9 @@ function App() {
   return (
     <HashRouter >
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/hxi/:lang/:hapticCase/:id/:trial" element={<HXI/>} />
-        <Route path="/nasa-tlx" element={<NASATLX/>} />
+        <Route path="*" element={<Home/>} />
+        <Route path="/:lang/hxi/:hapticCase/:id/:trial" element={<HXI/>} />
+        <Route path="/:lang/nasa-tlx" element={<NASATLX/>} />
       </Routes>
       
     </HashRouter >

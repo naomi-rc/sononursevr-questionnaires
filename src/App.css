@@ -43,74 +43,103 @@ body {
   margin: 2rem;
   padding : 2rem;
 }
-table {
+
+.HXI {
+  table {
   border-collapse: collapse;
   table-layout: fixed;
   margin-bottom: 2em;
-}
-th {
-  font-weight: normal;
-  font-size: small;
-}
-.question-entry {
-  border-bottom: 0.1em solid black; 
-}
-.questionnaire-description {
-  text-align: left;
-  line-height: 2em;
-}
-.question {
-  text-align: left;
-  line-height: 1.5em;
-}
-input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 17px;
-  height: 17px;
-  border: 2px solid #666;
-  border-radius: 2px;
-  display: inline-block;
-  position: relative;
-  margin: 0;
-}
-input[type="radio"]:checked::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 10px;
-  height: 10px;
-  background-color: #333;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-}
-.participant-id {
-  margin-bottom: 2rem;
-}
-.indent {
-  margin-left: 2em; /* Control the tab size with this value */
-}
-.line {
-  width: 800%; /* set the desired length of the line */
-  height: 1px; /* set the height of the line */
-  background-color: black; /* set the color of the line */
-  margin:0 auto;
-}
-.button {
-  width: 30%;
-  height: 2em;
-  font-size:large;
-  background-color: lightblue;
-  border-radius: 3px;
+  }
+  th {
+    font-weight: normal;
+    font-size: small;
+  }
+  .question-entry {
+    border-bottom: 0.1em solid black; 
+  }
+  .questionnaire-description {
+    text-align: left;
+    line-height: 2em;
+  }
+  .question {
+    text-align: left;
+    line-height: 1.5em;
+  }
+  input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 17px;
+    height: 17px;
+    border: 2px solid #666;
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+    margin: 0;
+  }
+  input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    background-color: #333;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .participant-id {
+    margin-bottom: 2rem;
+  }
+  .indent {
+    margin-left: 2em; /* Control the tab size with this value */
+  }
+  .line {
+    width: 800%; /* set the desired length of the line */
+    height: 1px; /* set the height of the line */
+    background-color: black; /* set the color of the line */
+    margin:0 auto;
+  }
+  .button {
+    width: 30%;
+    height: 2em;
+    font-size:large;
+    background-color: lightblue;
+    border-radius: 3px;
+  }
+
+  .button:hover{
+      background-color: rgb(157, 196, 210);
+  }
+  .button:active {
+      background-color: rgb(169, 220, 238);
+  }
 }
 
-.button:hover{
-    background-color: rgb(157, 196, 210);
-}
-.button:active {
-    background-color: rgb(169, 220, 238);
+
+
+.home {
+  label,
+  input {
+    display: table-cell;
+    margin-bottom: 10px;
+  }
+
+  label {
+    padding-right: 10px;
+  }
+
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .inputData {
+    margin-bottom: 1em;
+  }
 }

@@ -8,6 +8,7 @@ type Question = {[key: string]: any};
 
 const HXI = () => {
 
+  const [questionsOrder, setQuestionsOrder] = React.useState<any>(); 
   const [info, setInfo] = React.useState<any>(); 
   const [questions, setQuestions] = React.useState<{}[] | undefined>(); 
   const [agreementLevel, setAgreementLevel] = React.useState<string[] | undefined>(); 
@@ -29,13 +30,16 @@ const HXI = () => {
       setInfo(HXI_EN.info);
       setAgreementLevel(HXI_EN.agreementLevel);
     }
-  }, [lang]);
+
+    setQuestionsOrder(questions?.map(q => Object.keys(q)[0]).join(','));
+  }, [lang, questions]);
 
   return (
     
-    <div className="App">
+    <div className="HXI App">
       <form 
         method="POST" 
+        target="_blank"
         action="https://script.google.com/macros/s/AKfycbx8iu-Eb7Hp2SpZcqLHI5loBdNqq9OZPmZ9DioMa8Hmn_uZMIrO2F-cRojsDNLbSO3d/exec"
       >
 
@@ -44,7 +48,7 @@ const HXI = () => {
 
           <h3 className="participant-id-section participant-id">
           <label htmlFor="participant-id">{info && info.participantid}</label>
-          <input name="ParicipantID" type="number" min="0" value={id}/>
+          <input name="ParicipantID" readOnly type="number" min="0" value={id}/>
           </h3>
         </div>
       
@@ -82,7 +86,7 @@ const HXI = () => {
                       <td></td>
                       {[...Array(7)].map((_, score) => (
                         <td key={score}>
-                          <input type="radio" name={`Q${key}`} value={score} />
+                          <input type="radio" required name={`Q${key}`} value={score} />
                         </td>
                       ))}
                     </tr>
@@ -95,7 +99,7 @@ const HXI = () => {
         <input hidden readOnly name="Language" value={lang}/>
         <input hidden readOnly name="Trial" value={trial}/>
         <input hidden readOnly name="HapticCase" value={hapticCase}/>
-        <input hidden readOnly name="QuestionsOrder" value={questions?.map(q => Object.keys(q)[0]).join(',')}/>
+        <input hidden readOnly name="QuestionsOrder" value={questionsOrder}/>
         <button type="submit" className="button">{info && info.submit}</button>
 
       </form>
