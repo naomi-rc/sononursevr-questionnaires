@@ -19,6 +19,13 @@ const HXI = () => {
   const [questions, setQuestions] = React.useState<{}[] | undefined>(); 
   const [agreementLevel, setAgreementLevel] = React.useState<string[] | undefined>(); 
   const [statementAnswers, setStatementAnswers] = React.useState<{[key: string] : string}>(); 
+  //const [factorScores, setsetFactorScores] = React.useState<string[]>(); 
+
+  const factors = [["Q18", "Q13", "Q2", "Q11"], //autotelics
+                  ["Q17", "Q5", "Q12", "Q1"], //involvement
+                  ["Q16", "Q0", "Q4", "Q7"], //realism
+                  ["Q3", "Q6", "Q9", "Q14"], // discord
+                  ["Q19", "Q15", "Q10", "Q8"]] //harmony
 
   const updateStatementAnswers = (key : string, value : string) => {
     setStatementAnswers(prevDictionary => ({ ...prevDictionary, [key] : value }));
@@ -51,34 +58,83 @@ const HXI = () => {
     console.log(statementAnswers)  
     }, [statementAnswers])
 
+
+  const calculateHXIScore = () => {
+    /**
+     * Factor Scores: Average the scores of the four items for each factor to obtain individual factor scores.
+     * General Score =  Autotelics + Involvement + Realism + ( 8 - Discord ) + Harmony
+     */
+    let generalScore = 0;
+    let scores = [] ;
+
+    if(statementAnswers){
+      for (let i = 0; i < factors.length; i++) {
+        const factor = factors[i];
+        let factorScore = 0;
+         for (let j = 0; j < factor.length; j++) {
+            const item = factor[j];
+            factorScore += parseInt(statementAnswers[item])
+         }
+         factorScore = factorScore / 4;
+         if(i === 3) {
+          // Reverse the score for Discord
+          factorScore = (8 - factorScore);
+         }
+         scores[i] = factorScore.toString();
+         generalScore += factorScore;
+      }
+    }  
+    //setsetFactorScores(scores); 
+    return {"generalScore": generalScore.toString(), "factorScores" : scores}
+  }
+
+
   const handleSubmit = (e : any) => {
     e.preventDefault();
     
-    const url  = "https://script.google.com/macros/s/AKfycbx8iu-Eb7Hp2SpZcqLHI5loBdNqq9OZPmZ9DioMa8Hmn_uZMIrO2F-cRojsDNLbSO3d/exec";
-
     let erreur: string | null = "Please provide an answer to all the statements.";
     if(lang === 'fr') erreur = "Veuillez fournir une réponse pour chaque déclaration.";
-    if (id && trial && hapticCase && lang && questionsOrder && statementAnswers && Object.keys(statementAnswers).length === 20) {    
+
+    if(statementAnswers && Object.keys(statementAnswers).length === 20){
+    
+      const scores = calculateHXIScore();
+
+      const url  = "https://script.google.com/macros/s/AKfycbx8iu-Eb7Hp2SpZcqLHI5loBdNqq9OZPmZ9DioMa8Hmn_uZMIrO2F-cRojsDNLbSO3d/exec";
       
-      const payload = new URLSearchParams({
-        ParticipantID : id,
-        Language : lang,
-        Trial : trial,
-        HapticCase : hapticCase,        
-        QuestionsOrder : questionsOrder,
-        ...statementAnswers       
-      }).toString();
+      if (id && trial && hapticCase && lang && questionsOrder && scores && scores.factorScores.length === 5) {    
 
-      console.log(payload);
+        const payload = new URLSearchParams({
+          ParticipantID : id,
+          Language : lang,
+          Trial : trial,
+          HapticCase : hapticCase,
+          DateTime : Date().toString(),
+          Autotelics : scores.factorScores[0],
+          Involvement : scores.factorScores[1],
+          Realism : scores.factorScores[2],
+          Discord : scores.factorScores[3],
+          Harmony : scores.factorScores[4],
+          GlobalHXIScore: scores.generalScore,
+          QuestionsOrder : questionsOrder,
+          ...statementAnswers       
+        }).toString();
 
-      fetch(url, {
-        method: "POST",
-        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-        body: (payload)
-      }).then(res=>res.text()).then(data=>{
-        console.log(data);
-        navigate(`/${lang}/questionnaire-complete`);
-      }).catch(error=> console.log(error))
+        console.log(payload);
+        console.log(scores.factorScores);
+        console.log(calculateHXIScore());
+
+        fetch(url, {
+          method: "POST",
+          headers: {"Content-Type": "application/x-www-form-urlencoded"},
+          body: (payload)
+        }).then(res=>res.text()).then(data=>{
+          console.log(data);
+          navigate(`/${lang}/questionnaire-complete`);
+        }).catch(error=> console.log(error))
+      }
+      else {
+      alert("Critical error");
+    } 
     }
     else {
       alert(erreur);
