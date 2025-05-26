@@ -77,6 +77,7 @@ const HXI = () => {
         body: (payload)
       }).then(res=>res.text()).then(data=>{
         console.log(data);
+        navigate(`/${lang}/questionnaire-complete`);
       }).catch(error=> console.log(error))
     }
     else {
@@ -143,7 +144,7 @@ const HXI = () => {
                         <tr className="question-entry">
                           <td></td>
                           {[...Array(7)].map((_, score) => (
-                            <td key={score}>
+                            <td key={score+1}>
                               <input type="radio" required name={`Q${key}`} value={score+1} onChange={(e) => {updateStatementAnswers(`Q${key}`, e.target.value)}}/>
                             </td>
                           ))}

@@ -151,3 +151,11 @@ body {
     margin-bottom: 1em;
   }
 }
+
+.questionnaireComplete {
+  font-size: x-large;
+
+  .button {
+    font-size:large;
+  }
+}

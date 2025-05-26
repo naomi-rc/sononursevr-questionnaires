@@ -7,7 +7,10 @@ const HXI_FR = {
     "hapticSensationsDefinition" : "Sensations haptiques : Tout ce que vous ressentez avec le sens du toucher. Il peut s'agir de vibrations, de force, de température, de pression ou de toute autre sensation physique.",
     "otherSensesDefinition" : "Autres sens : modalités sensorielles au-delà du toucher, telles que la vision et l'ouïe.",
     "understood" : "J'ai compris",
-    "submit" : "Soumettre"
+    "submit" : "Soumettre",
+    "savedResponse" : "Votre réponse a bien été enregistrée.",
+    "thankyou" : "Merci de votre participation!",
+    "sendAnotherResponse" : "Envoyer une autre réponse",
     },
   "agreementLevel" :[
     "Fortement en désaccord",
