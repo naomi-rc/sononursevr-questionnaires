@@ -14,6 +14,7 @@ const HXI = () => {
   const {lang, id, trial, hapticCase } = useParams();
 
   const [understood, setUnderstood] = React.useState<boolean>(); 
+  const [loading, setLoading] = React.useState(false);
   const [questionsOrder, setQuestionsOrder] = React.useState<string>(); 
   const [info, setInfo] = React.useState<any>(); 
   const [questions, setQuestions] = React.useState<{}[] | undefined>(); 
@@ -84,7 +85,7 @@ const HXI = () => {
          generalScore += factorScore;
       }
     }  
-    //setsetFactorScores(scores); 
+
     return {"generalScore": generalScore.toString(), "factorScores" : scores}
   }
 
@@ -92,6 +93,8 @@ const HXI = () => {
   const handleSubmit = (e : any) => {
     e.preventDefault();
     
+    setLoading(true);
+
     let erreur: string | null = "Please provide an answer to all the statements.";
     if(lang === 'fr') erreur = "Veuillez fournir une réponse pour chaque déclaration.";
 
@@ -118,10 +121,6 @@ const HXI = () => {
           QuestionsOrder : questionsOrder,
           ...statementAnswers       
         }).toString();
-
-        console.log(payload);
-        console.log(scores.factorScores);
-        console.log(calculateHXIScore());
 
         fetch(url, {
           method: "POST",
@@ -173,6 +172,13 @@ const HXI = () => {
         }
 
         {
+          loading && (
+          <div className="loading-overlay">
+            <div className="loading-spinner"></div>
+          </div>
+        )}
+
+        {          
           understood && 
           <div>
             <table width="100%">
