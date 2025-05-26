@@ -2,7 +2,7 @@ const HXI_FR = {
   "info" : {
     "title" : "HXI",
     "participantid" : "ID du Participant : ",
-    "instructions" : "Une série de déclarations vous sera présentée. Veuillez sélectionner l'option qui reflète le mieux votre niveau d'accord avec chaque énoncé concernant votre expérience de jeu qui vient d'être décrite.",
+    "instructions" : "Une série de déclarations vous sera présentée. Veuillez sélectionner l'option qui reflète le mieux votre niveau d'accord avec chaque énoncé concernant votre expérience avec la simulation.",
     "clarityDescription" : "Pour plus de clarté, veuillez consulter les définitions suivantes :",
     "hapticSensationsDefinition" : "Sensations haptiques : Tout ce que vous ressentez avec le sens du toucher. Il peut s'agir de vibrations, de force, de température, de pression ou de toute autre sensation physique.",
     "otherSensesDefinition" : "Autres sens : modalités sensorielles au-delà du toucher, telles que la vision et l'ouïe.",
@@ -33,7 +33,7 @@ const HXI_FR = {
   {"12" : "Les sensations haptiques ont contribué à mon implication dans la tâche."},
   {"13" : "L'expérience des sensations haptiques m'a été agréable."},
   {"14" : "J'ai ressenti un décalage entre les sensations haptiques et ce à quoi je m'attendais."},
-  {"15" : "Les sensations haptiques s'intègrent parfaitement aux autres sens."},
+  {"15" : "Les sensations haptiques s'intègrent de manière fluide aux autres sens."},
   {"16" : "Les sensations haptiques ressemblent à celles que je ressens dans la vraie vie."},
   {"17" : "Je me sentais absorbé par la tâche grâce aux sensations haptiques."},
   {"18" : "Quelle que soit la fonction, j'ai trouvé les sensations haptiques agréables."},
