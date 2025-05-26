@@ -53,8 +53,8 @@ const HXI = () => {
 
   const handleSubmit = (e : any) => {
     e.preventDefault();
-   // const url  = "https://script.google.com/macros/s/AKfycbx8iu-Eb7Hp2SpZcqLHI5loBdNqq9OZPmZ9DioMa8Hmn_uZMIrO2F-cRojsDNLbSO3d/exec";
-    const url  = "";
+    
+    const url  = "https://script.google.com/macros/s/AKfycbx8iu-Eb7Hp2SpZcqLHI5loBdNqq9OZPmZ9DioMa8Hmn_uZMIrO2F-cRojsDNLbSO3d/exec";
 
     let erreur: string | null = "Please provide an answer to all the statements.";
     if(lang === 'fr') erreur = "Veuillez fournir une réponse pour chaque déclaration.";
