@@ -1,6 +1,6 @@
 # Haptic Experience Inventory (HXI) Online Questionnaire
 
-The [Haptic Experience Inventory (HXI)]("https://get-hxi.org/") is the first standardized questionnaire measuring Haptic Experience (HX). This project provides an online version of the questionnaire built with [Create React App](https://github.com/facebook/create-react-app) and hosted with GitHub Pages (GitHub Actions).
+The [Haptic Experience Inventory (HXI)](https://get-hxi.org/) is the first standardized questionnaire measuring Haptic Experience (HX). This project provides an online version of the questionnaire built with [Create React App](https://github.com/facebook/create-react-app) and hosted with GitHub Pages (GitHub Actions).
 
 ## Haptic Experience Inventory (HXI)
 
@@ -16,7 +16,7 @@ The HXI items are shown in shuffled randomized order. Factor scores and the gene
 
 `General Score = Autotelics + Involvement + Realism + Harmony + ( 8 − Discord )`
 
-See [Haptic Experience Inventory (HXI) webpage]("https://get-hxi.org/") for more details on how the scores are calculated.
+See [Haptic Experience Inventory (HXI) webpage](https://get-hxi.org/) for more details on how the scores are calculated.
 
 
 The following information is collected and sent to a Google Sheet file using Google App Scripts :
