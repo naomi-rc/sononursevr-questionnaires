@@ -92,8 +92,6 @@ const HXI = () => {
 
   const handleSubmit = (e : any) => {
     e.preventDefault();
-    
-    setLoading(true);
 
     let erreur: string | null = "Please provide an answer to all the statements.";
     if(lang === 'fr') erreur = "Veuillez fournir une réponse pour chaque déclaration.";
@@ -105,6 +103,8 @@ const HXI = () => {
       const url  = "https://script.google.com/macros/s/AKfycbx8iu-Eb7Hp2SpZcqLHI5loBdNqq9OZPmZ9DioMa8Hmn_uZMIrO2F-cRojsDNLbSO3d/exec";
       
       if (id && trial && hapticCase && lang && questionsOrder && scores && scores.factorScores.length === 5) {    
+
+        setLoading(true);
 
         const payload = new URLSearchParams({
           ParticipantID : id,
@@ -132,8 +132,8 @@ const HXI = () => {
         }).catch(error=> console.log(error))
       }
       else {
-      alert("Critical error");
-    } 
+        alert("Critical error");
+      } 
     }
     else {
       alert(erreur);
