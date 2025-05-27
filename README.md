@@ -1,8 +1,37 @@
-# Getting Started with Create React App
+# Haptic Experience Inventory (HXI) Online Questionnaire
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The [Haptic Experience Inventory (HXI)]("https://get-hxi.org/") is the first standardized questionnaire measuring Haptic Experience (HX). This project provides an online version of the questionnaire built with [Create React App](https://github.com/facebook/create-react-app) and hosted with GitHub Pages (GitHub Actions).
 
-## Available Scripts
+## Haptic Experience Inventory (HXI)
+
+The HXI is built around five core factors that represent distinct aspects of the haptic experience: Autotelics, Realism, Harmony, Discord, Involvement. Each factor captures a dimension of how users perceive and evaluate haptic interactions, contributing to a more nuanced understanding of the haptic experience.
+
+Factors are captured by an individual's responses to 20 statements using a 7-point Likert scale. 
+
+## How this online questionnaire works
+
+The questionnaire administrator should enter the language of choice (English or French), the participant's ID number, the trial number and the haptic case (specific to the SonoNurse VR haptic project but can be updated to match any haptic conditions as needed). Starting the questionnaire shows the instructions for the participant to read and understand.
+
+The HXI items are shown in shuffled randomized order. Factor scores and the general score are automatically calculated from an individual's responses to the 20 statements. 
+
+`General Score = Autotelics + Involvement + Realism + Harmony + ( 8 − Discord )`
+
+See [Haptic Experience Inventory (HXI) webpage]("https://get-hxi.org/") for more details on how the scores are calculated.
+
+
+The following information is collected and sent to a Google Sheet file using Google App Scripts :
+- ParticipantID
+- Trial number	
+- HapticCase	
+- Language	
+- Date and time	the responses were sent
+- Users' response to each statements
+- Order of the statements
+- Factor scores (Autotelics, Involvement, Realism, Discord, Harmony)
+- Global HXI Score		
+
+
+## Development
 
 In the project directory, you can run:
 
@@ -39,7 +68,7 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Learn More About Create React App
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
