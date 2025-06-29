@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import '../App.css';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import HXI_EN from "../Questions/hxi/en";
 import HXI_FR from "../Questions/hxi/fr";
 
