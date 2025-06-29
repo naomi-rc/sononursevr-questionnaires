@@ -2,17 +2,23 @@ import React from 'react';
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useLocalStorage } from "../useLocalStorage";
 
 
 function Home() {
 
   let navigate = useNavigate();
 
+  const [studyName, setStudyName] =  useLocalStorage('studyName', ''); 
   const [lang, setLanguage] =  useState('en');
   const [hapticCase, setHapticCase] =  useState('h');
   const [id, setId] =  useState('0'); 
   const [trial, setTrial] =  useState('0');
 
+
+  const handleStudyNameInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setStudyName(event.target.value);
+  };
 
   const handleLanguageInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setLanguage(event.target.value);
@@ -30,7 +36,7 @@ function Home() {
     setTrial(event.target.value);
   };
 
-  const startHXIQuestionnaire = () => {
+  const validateInput = () => {
     console.log(id);
     if(lang === ''){
       alert("Enter a valid language option!");
@@ -45,14 +51,29 @@ function Home() {
       alert("Enter a valid trial number!");
     }
     else{
-      navigate(`/${lang}/hxi/${hapticCase}/${id}/${trial}`);
-    }    
-  };
+      return true;
+    }
+    return false;
+  }
 
+  const startHXIQuestionnaire = () => {    
+    if(validateInput())
+      navigate(`/${lang}/hxi/${hapticCase}/${id}/${trial}`);
+    }   
+
+   const startNASATLXQuestionnaire = () => {
+    if(validateInput())
+      navigate(`/${lang}/nasa-tlx/${hapticCase}/${id}/${trial}`);
+    }    
 
   return (
       <div className="home App">
       <header className="header">
+
+        <div className="inputData">
+          <label>Study Name: </label>
+          <input value={studyName} required onChange={handleStudyNameInputChange} placeholder="Enter study name" />
+        </div>
  
         <div className="inputData">
           <label>Language: </label>
@@ -81,7 +102,8 @@ function Home() {
         </div>
 
         <br/>
-        <button onClick={startHXIQuestionnaire}>Start HXI</button>
+        <button onClick={startHXIQuestionnaire}>Start HXI</button> <br/>
+        <button onClick={startNASATLXQuestionnaire}>Start NASA-TLX</button>
       </header>
     </div>
     
