@@ -51,6 +51,24 @@ body {
   font-size: medium;
 }
 
+.languageDropDown {
+    display: block;
+    font-size:large;
+    border-radius: 3px;
+    color: #3093ff;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .participant-id {
+    margin-bottom: 2rem;
+  }
+  .indent {
+    margin-left: 2em; /* Control the tab size with this value */
+  }
+
 .HXI {
   table {
     border-collapse: collapse;
@@ -96,16 +114,7 @@ body {
     height: 10px;
     background-color: #333;
   }
-  .header {
-    display: flex;
-    justify-content: space-between;
-  }
-  .participant-id {
-    margin-bottom: 2rem;
-  }
-  .indent {
-    margin-left: 2em; /* Control the tab size with this value */
-  }
+  
   .line {
     width: 800%; /* set the desired length of the line */
     height: 1px; /* set the height of the line */
@@ -127,11 +136,7 @@ body {
       background-color: rgb(169, 220, 238);
   }
 
-  .languageDropDown {
-    display: block;
-    font-size:large;
-    border-radius: 3px;
-  }
+  
 
 
 
@@ -197,6 +202,166 @@ body {
     align-items: center; */
     justify-content: center;
     font-size: calc(5px + 2vmin);
+  }
+
+  .nasa-slider-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto;
+    font-family: sans-serif;
+    text-align: center;
+  }
+
+  .slider-bar {
+    position: relative;
+    height: 70px;
+    
+    margin-bottom: 20px;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .slider-track {
+    position: absolute;
+    top: 70%;
+    left: 0;
+    right: 0;
+    height: 0.1em;
+    background-color: #8d807f;
+    transform: translateY(-50%);
+    z-index: 1;
+    margin: 0 1px;
+  }
+
+  .slider-ticks {
+    display: flex;
+    position: relative;
+    z-index: 2;
+    
+    padding: 0;
+    margin: 0;
+  }
+
+  .tick-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .tick {
+    width: 0.1em;
+    height: 20px;
+    background-color: #8d807f;
+    margin-top: 29px;
+  }
+
+  .tick-middle {
+    height: calc(20px*(10/3));
+    margin-top: -16px;
+  }
+
+
+  .tick-end {
+    margin-top: -20px;
+    margin-left: 92%;
+  }
+
+
+  .red-dash {
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 40px;
+    background-color: red;
+    transition: left 0.05s ease-out;
+    z-index: 3;
+    margin-top: 20px;
+  }
+
+  .label-ends {
+    position: absolute;
+    bottom: -20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #333;
+    padding: 0 4px;
+  }
+
+  .label-left {
+    text-align: left;
+  }
+
+  .label-right {
+    text-align: right;
+  }
+
+  .selected-label {
+    font-size: 16px;
+    color: #333;
+  }
+
+  .pairwiseFactors{
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    .page {
+      display: flex;
+      flex-direction: column;
+    }
+
+.topSection {
+  padding: 20px;
+  text-align: center;
+}
+
+.pairsParent {
+  height: 40vh;
+  margin-top: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 94%;
+}
+
+.pairOption {
+  flex: 1;
+  display: flex;
+  flex-direction: column; 
+  align-items: center; /* vertical center */
+  justify-content: center; /* horizontal center */
+  font-size: 20px;
+  text-align: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.pairOption p {
+  margin-top: 50px;
+  font-size: 16px;
+  color: #555;
+  align-self: flex-start; 
+  text-align: left;
+
+}
+
+.divider {
+  height: 1px;
+  background-color: #aaa;
+  width: 100%;
+}
+
+.pairsBottom {
+    position: fixed;
+    bottom: 5%;
+    left: 2%;
+  }
+
   }
 }
 
@@ -286,101 +451,3 @@ body {
 
 
 
-.nasa-slider-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 40px auto;
-  font-family: sans-serif;
-  text-align: center;
-}
-
-.slider-bar {
-  position: relative;
-  height: 70px;
-  
-  margin-bottom: 20px;
-  touch-action: none;
-  user-select: none;
-}
-
-.slider-track {
-  position: absolute;
-  top: 70%;
-  left: 0;
-  right: 0;
-  height: 0.1em;
-  background-color: #8d807f;
-  transform: translateY(-50%);
-  z-index: 1;
-  margin: 0 1px;
-}
-
-.slider-ticks {
-  display: flex;
-  position: relative;
-  z-index: 2;
-  
-  padding: 0;
-  margin: 0;
-}
-
-.tick-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  pointer-events: none;
-}
-
-.tick {
-  width: 0.1em;
-  height: 20px;
-  background-color: #8d807f;
-  margin-top: 29px;
-}
-
-.tick-middle {
-  height: calc(20px*(10/3));
-  margin-top: -16px;
-}
-
-
-.tick-end {
-  margin-top: -20px;
-  margin-left: 92%;
-}
-
-
-.red-dash {
-  position: absolute;
-  top: 0;
-  width: 2px;
-  height: 40px;
-  background-color: red;
-  transition: left 0.05s ease-out;
-  z-index: 3;
-  margin-top: 20px;
-}
-
-.label-ends {
-  position: absolute;
-  bottom: -20px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: #333;
-  padding: 0 4px;
-}
-
-.label-left {
-  text-align: left;
-}
-
-.label-right {
-  text-align: right;
-}
-
-.selected-label {
-  font-size: 16px;
-  color: #333;
-}

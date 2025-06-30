@@ -2,6 +2,7 @@ const HXI_EN = {
   "info" : {
     "title" : "HXI",
     "participantid" : "Participant ID : ",
+    "back" : "< Back",
     "instructions" : "You will be shown a series of statements. Please select the option that best reflects your agreement level with each statement with regards to your experience with the simulation.",
     "clarityDescription" : "For clarity, please review the following definitions: ",
     "hapticSensationsDefinition" : "Haptic sensations: Anything that you feel with the sense of touch. It could be vibrations, force, temperature, pressure, or any other physical sensation.",

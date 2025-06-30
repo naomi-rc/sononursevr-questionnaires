@@ -11,7 +11,6 @@ function NASATLX() {
   let navigate = useNavigate();
 
   const {lang, id, trial, hapticCase } = useParams();
-
   const [understood, setUnderstood] = React.useState<boolean>(); 
   const [loading, setLoading] = React.useState(false);
   const [questionsOrder, setQuestionsOrder] = React.useState<string>(); 
@@ -20,9 +19,85 @@ function NASATLX() {
   const [agreementLevel, setAgreementLevel] = React.useState<string[] | undefined>(); 
   const [statementAnswers, setStatementAnswers] = React.useState<{[key: string] : string}>(); 
 
+  const NUM_TICKS = 20;
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [dragPosition, setDragPosition] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const [section, setSection] = useState<number>(0);
+  const [pair, setPair] = useState<number>(0);
+  const [factor, setFactor] = useState<number>(0);
+  const [pairs, setPairs] = useState<string[][]>();
+  enum Section {
+    Instructions,
+    Definitions,
+    Pairwise,
+    Rating
+  }
+
+  let currentSection = Section.Instructions;
+  let factors = {"MD" : 0, "PD" : 0, "TD" : 0, "P" : 0, "E" : 0, "F" : 0}
+  const pairsList = 
+  [["E","P"], ["TD", "F"], ["TD", "E"], ["PD", "F"], ["P", "F"], 
+  ["PD", "TD"], ["PD", "P"], ["TD", "MD"], ["F", "E"], ["P", "MD"], 
+  ["P", "TD"], ["MD", "E"], ["MD", "PD"], ["E", "PD"], ["F", "MD"]]
+
+interface Pair {
+  first : string,
+  second : string
+}
+
+  const shuffle = (array : string[][]) => { 
+    return array.sort(() => Math.random() - 0.5); 
+  }; 
+
   const changeLanguage = (value : string) => {
     console.log(value);
     navigate(`/${value}/nasa-tlx/${hapticCase}/${id}/${trial}`);
+  }
+
+  const previousSection = () => {
+    if(section==3 && (pair > 0)){
+      console.log("previous pair")
+      setPair(pair-1);
+    }
+    else if(section==5 && (factor > 0)){
+      console.log("previous pair")
+      setFactor(factor-1);
+    }
+    else if(section==0){
+      navigate(`/`);
+    }
+    else{
+      console.log("previous section")
+      setSection(Math.max(0, section-1))
+    }
+  }
+
+  const nextSection = () => {
+    console.log("next section")
+    setSection(section+1)
+  }
+
+  const nextPair = () => {
+    console.log("next pair")
+    if(pairs && pair + 1 >= pairs.length){
+      nextSection();
+    }
+    else{
+      setPair(pair+1);
+    }
+  }
+
+  const nextScale = () => {
+    console.log("next pair")
+    if(factors && factor + 1 >= Object.keys(factors).length){
+      nextSection();
+    }
+    else{
+      setFactor(factor+1);
+    }
   }
 
   useEffect(() => {
@@ -33,30 +108,12 @@ function NASATLX() {
       setInfo(NASATLX_EN.info);
     }
     setQuestionsOrder(questions?.map(q => Object.keys(q)[0]).join(','));
+    setPairs(shuffle(pairsList));
   }, [lang, questions]);
 
 
   
 
-
-
-  const NUM_TICKS = 20;
-
-
-const trackRef = useRef<HTMLDivElement | null>(null);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [spaceBetween, setSpaceBetween] = useState<number | null>(null);
-  const [dragPosition, setDragPosition] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (track) {
-      const rect = track.getBoundingClientRect();
-      setSpaceBetween(rect.width/NUM_TICKS);
-    }
-    console.log(spaceBetween);
-  }, [spaceBetween]);
   
   const getRelativePosition = (clientX: number): number => {
     const track = trackRef.current;
@@ -104,11 +161,11 @@ const dashLeft =
     : null;
 
   return (
-    info && <div className="HXI NASATLX App">
+    info && 
+    <div className="NASATLX App">
       <div className="header">
-        <button type="button" className="textButton" >{info.back}</button>
-        {/* <div style={{color: "#3093ff"}}>{info.back}</div> */}
-        <select name="cars" className="languageDropDown" style={{color: "#3093ff"}} value={lang} onChange={(e) => {changeLanguage(e.target.value)}}>
+        <button type="button" className="textButton" onClick={(e) => {previousSection()}}>{info.back}</button>
+        <select name="cars" className="languageDropDown" value={lang} onChange={(e) => {changeLanguage(e.target.value)}}>
           <option value="fr">FR</option>
           <option value="en">EN</option>
         </select>
@@ -125,18 +182,20 @@ const dashLeft =
       </div>
     
       {
-        false && 
+        (section == 0) && 
         <div>
           <h4>Instructions</h4>
-          <div className="questionnaire-description">
+          <div className="questionnaire-description left">
             <p>{info.instructions}</p>
             <p>{info.instructionsContinued}</p>
           </div>
+          <button type="button" className="bottom nasatlx-button" onClick={(e) => nextSection()}>{info && info.next}</button>
         </div>
+        
       }
 
       {
-        false && 
+        (section == 1) && 
         <div>
           <h4>Definitions</h4>
           <div className="left">
@@ -170,12 +229,46 @@ const dashLeft =
               <span>{info.frustration_definition}</span>
             </p>
           </div>
+
+          <button type="button" className="bottom nasatlx-button" onClick={(e) => nextSection()}>{info && info.next}</button>
         </div>
       }
 
+      {
+        (section == 2) && 
+        <div>
+          <h4>Pairwise Comparaison</h4>
+          <div className="left">
+              <p>You will now be shown...</p>
+            
+          </div>
+          <button type="button" className="bottom nasatlx-button" onClick={(e) => nextSection()}>{info && info.next}</button>
+        </div>
+      }
 
       {
-        false && 
+        (section == 3) && 
+        <div className="pairwiseFactors">
+          <h4>{pair+1} of {pairs && pairs.length}</h4>
+          <div className="page left">
+            <p>Tap the factor below that represents the more important contributor to workload for the psecific task that you recently performed</p>
+            <div className="pairsParent pairsBottom">
+              <div className="pairOption" onClick={(e) => nextPair()}>
+                {pairs && pairs[pair][0]}
+                <p>definition</p>
+              </div>
+              <div className="divider" />
+              <div className="pairOption" onClick={(e) => nextPair()}>
+                 {pairs && pairs[pair][1]}
+                 <p>definition</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      {
+        (section == 4) && 
         <div>
           <h4>Rating Scales</h4>
           <div className="left">
@@ -183,116 +276,70 @@ const dashLeft =
             <p>{info.evaluate}</p>
             <p>{info.consider}</p>
           </div>
+          <button type="button" className="bottom nasatlx-button" onClick={(e) => nextSection()}>{info && info.next}</button>
         </div>
       }
 
       {
-        false && 
+        (section == 5) &&
         <div className="">
-          <h4>1 of 6</h4>
+          <h4>{factor+1} of {Object.keys(factors).length}</h4>
           <div className="left scales">
             <span><b>{info.mental}</b></span>
             <span>{info.mental_question}</span>
+
+            <div className="nasa-slider-container">
+              <div className="slider-bar"
+                onMouseDown={handleStart}
+                onMouseMove={handleMove}
+                onMouseUp={handleEnd}
+                onMouseLeave={handleEnd}
+                onTouchStart={handleStart}
+                onTouchMove={handleMove}
+                onTouchEnd={handleEnd}
+              >
+                <div className="slider-track" />
+                <div className="slider-ticks" ref={trackRef}>
+                  {Array.from({ length: NUM_TICKS}, (_, i) => (
+                    <div key={i} className="tick-container">
+                      <div
+                        className={`tick ${i} ${i === Math.floor(NUM_TICKS / 2) ? 'tick-middle' : ''}`}
+                      />
+                      {
+                        i==NUM_TICKS -1 &&
+                        <div
+                        className={`tick ${i+1} tick-end`}
+                      />
+                      }
+                    </div>
+                  ))}
+                  
+                </div>
+
+                {dashLeft !== null && (
+                  <div
+                    className="red-dash"
+                    style={{ left: `calc(${dashLeft}%)` }}
+                  />
+                )}
+                <div className="label-ends">
+                  <span className="label-left">Low</span>
+                  <span className="label-right">High</span>
+                </div>
+              </div>
+
+                {/* <p className="selected-label">
+                  {selected !== null ? `Selected: ${Math.round(selected)}` : 'Tap or drag to select'}
+                </p> */}
+            </div>
 
           </div>
+          <button type="button" className="bottom nasatlx-button" onClick={(e) => nextScale()}>{info && info.next}</button>
         </div>
       }
-      
-
-      <button type="button" className="bottom nasatlx-button" >{info && info.next}</button>
-{/* {false && 
-     <div className="nasa-slider-container">
-      <div className="slider-bar">
-        <div className="slider-track" />
-        <div className="slider-ticks">
-          {[...Array(NUM_TICKS)].map((_, i) => (
-            <div key={i} className="tick-container" onClick={() => handleClick(i)}>
-              <div className="tick" />
-            </div>
-          ))}
-        </div>
-        {selected !== null && (
-          <div
-            className="red-dash"
-            style={{
-              left: `calc(${(selected / (NUM_TICKS - 1)) * 100}%)`,
-            }}
-          />
-        )}
-      </div>
-      <p className="selected-label">
-        {selected !== null ? `Selected: ${selected}` : 'Click a tick'}
-      </p>
-    </div>
-    }
- */}
 
 
-
-
-
-    {
-
-      true &&
-
-      <div className="">
-          <h4>1 of 6</h4>
-          <div className="left scales">
-            <span><b>{info.mental}</b></span>
-            <span>{info.mental_question}</span>
-
-
-      <div className="nasa-slider-container">
-      <div
-        className="slider-bar"
-        
-        onMouseDown={handleStart}
-        onMouseMove={handleMove}
-        onMouseUp={handleEnd}
-        onMouseLeave={handleEnd}
-        onTouchStart={handleStart}
-        onTouchMove={handleMove}
-        onTouchEnd={handleEnd}
-      >
-        <div className="slider-track" />
-
-        <div className="slider-ticks" ref={trackRef}>
-  {Array.from({ length: NUM_TICKS}, (_, i) => (
-    <div key={i} className="tick-container">
-      <div
-        className={`tick ${i} ${i === Math.floor(NUM_TICKS / 2) ? 'tick-middle' : ''}`}
-      />
-      {
-        i==NUM_TICKS -1 &&
-        <div
-        className={`tick ${i+1} tick-end`}
-      />
-      }
-    </div>
-  ))}
-  
-</div>
-
-        {dashLeft !== null && (
-          <div
-            className="red-dash"
-            style={{ left: `calc(${dashLeft}%)` }}
-          />
-        )}
-        <div className="label-ends">
-          <span className="label-left">Low</span>
-          <span className="label-right">High</span>
-        </div>
-      </div>
-
-      <p className="selected-label">
-        {selected !== null ? `Selected: ${Math.round(selected)}` : 'Tap or drag to select'}
-      </p>
-    </div>
-
-    </div>
-        </div>
-    }
+    
   </div>
   );
 }

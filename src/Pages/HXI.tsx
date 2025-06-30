@@ -142,19 +142,23 @@ const HXI = () => {
   return (
     info &&
     <div className="HXI App">
+        <div className="header">
+        <button type="button" className="textButton" >{info.back}</button>
         <select name="cars" className="languageDropDown" value={lang} onChange={(e) => {changeLanguage(e.target.value)}}>
           <option value="fr">FR</option>
           <option value="en">EN</option>
         </select>
-        <div className="header">
-          
-          <h3 className="questionnaire-title">{info.title}</h3>
+        
+      </div>
+      <div className="header">
+        
+        <h3 className="questionnaire-title">{info.title}</h3>
 
-          <h3 className="participant-id-section participant-id">
-            <label htmlFor="participant-id">{info.participantid}</label>
-            <input name="ParicipantID" readOnly type="number" min="0" value={id}/>
-          </h3>
-        </div>
+        <h3 className="participant-id-section participant-id">
+          <label htmlFor="participant-id">{info.participantid}</label>
+          <input name="ParicipantID" readOnly type="number" min="0" value={id}/>
+        </h3>
+      </div>
       
         <div className="questionnaire-description">
           <p>{info.instructions}</p>

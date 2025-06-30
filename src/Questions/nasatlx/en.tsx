@@ -43,6 +43,14 @@ const NASATLX_EN = {
 
 
   }, 
+  "pairs" : [
+    {0 : "Mental Demand"},
+    {1 : "Physical Demand"},
+    {2 : "Temporal Demand"},
+    {3 : "Peformance"},
+    {4 : "Effort"},
+    {5 : "Frustration"}
+  ]
 }
 export default NASATLX_EN;
 
