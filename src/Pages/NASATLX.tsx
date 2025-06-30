@@ -4,6 +4,37 @@ import { useParams, useNavigate } from 'react-router-dom';
 import NASATLX_EN from "../Questions/nasatlx/en"
 import NASATLX_FR from "../Questions/nasatlx/fr";
 import { Console } from 'console';
+import { TLXSlider } from './TLXSlider';
+
+
+
+
+const categories = [
+  'MD',
+  'PD',
+  'TD',
+  'P',
+  'E',
+  'F',
+];
+
+interface NasaTLXFormProps {
+  onSubmit: (values: Record<string, number>) => void;
+}
+interface TLXFactor {
+  name: string;
+  definition: string;
+  question: string;
+  reference: string;
+  scale: string;
+  upper: string;
+  lower: string;
+}
+
+type TLXFactorKey = "MD" | "PD" | "TD" | "P" | "E" | "F";
+
+type TLXFactors = Record<TLXFactorKey, TLXFactor>;
+
 
 
 function NASATLX() {
@@ -15,7 +46,7 @@ function NASATLX() {
   const [loading, setLoading] = React.useState(false);
   const [questionsOrder, setQuestionsOrder] = React.useState<string>(); 
   const [info, setInfo] = React.useState<any>(); 
-  const [questions, setQuestions] = React.useState<{}[] | undefined>(); 
+  const [factors, setFactors] = useState<TLXFactors>();
   const [agreementLevel, setAgreementLevel] = React.useState<string[] | undefined>(); 
   const [statementAnswers, setStatementAnswers] = React.useState<{[key: string] : string}>(); 
 
@@ -36,8 +67,11 @@ function NASATLX() {
     Rating
   }
 
+
+  
+
   let currentSection = Section.Instructions;
-  let factors = {"MD" : 0, "PD" : 0, "TD" : 0, "P" : 0, "E" : 0, "F" : 0}
+  //let factors = {"MD" : 0, "PD" : 0, "TD" : 0, "P" : 0, "E" : 0, "F" : 0}
   const pairsList = 
   [["E","P"], ["TD", "F"], ["TD", "E"], ["PD", "F"], ["P", "F"], 
   ["PD", "TD"], ["PD", "P"], ["TD", "MD"], ["F", "E"], ["P", "MD"], 
@@ -62,9 +96,10 @@ interface Pair {
       console.log("previous pair")
       setPair(pair-1);
     }
-    else if(section==5 && (factor > 0)){
+    else if(section==5 && (currentIndex > 0|| factor > 0)){
       console.log("previous pair")
       setFactor(factor-1);
+      setCurrentIndex(currentIndex - 1);
     }
     else if(section==0){
       navigate(`/`);
@@ -103,13 +138,14 @@ interface Pair {
   useEffect(() => {
     if(lang==='fr'){
       setInfo(NASATLX_FR.info);
+      //setFactors(NASATLX_FR.factors);
     }
     else{
       setInfo(NASATLX_EN.info);
+      setFactors(NASATLX_EN.factors);
     }
-    setQuestionsOrder(questions?.map(q => Object.keys(q)[0]).join(','));
     setPairs(shuffle(pairsList));
-  }, [lang, questions]);
+  }, [lang]);
 
 
   
@@ -160,6 +196,38 @@ const dashLeft =
     ? ((selected) / NUM_TICKS) * 100
     : null;
 
+
+
+
+
+
+const [currentIndex, setCurrentIndex] = useState(0);
+  const [values, setValues] = useState<Record<string, number | null>>(
+    Object.fromEntries(categories.map((cat) => [cat, null]))
+  );
+
+  const currentCategory = categories[currentIndex];
+  const currentValue = values[currentCategory];
+
+  const handleNext = () => {
+    if (currentValue === null) return;
+
+    if (currentIndex < categories.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      // All done, submit
+     // onSubmit(values as Record<string, number>);
+    }
+  };
+
+  const handleChange = (value: number) => {
+    setValues((prev) => ({
+      ...prev,
+      [currentCategory]: value,
+    }));
+  };
+
+
   return (
     info && 
     <div className="NASATLX App">
@@ -199,35 +267,13 @@ const dashLeft =
         <div>
           <h4>Definitions</h4>
           <div className="left">
-            <p>
-              <span><b>{info.mental}</b></span> <span>{info.low_high}</span><br/>
-              <span>{info.mental_definition}</span>
-            </p>
 
-            <p>
-              <span><b>{info.physical}</b></span> <span>{info.low_high}</span><br/>
-              <span>{info.physical_definition}</span>
-            </p>
-
-            <p>
-              <span><b>{info.temporal}</b></span> <span>{info.low_high}</span><br/>
-              <span>{info.temporal_definition}</span>
-            </p>
-
-            <p>
-              <span><b>{info.performance}</b></span> <span>{info.good_poor}</span><br/>
-              <span>{info.performance_definition}</span>
-            </p>
-
-            <p>
-              <span><b>{info.effort}</b></span> <span>{info.low_high}</span><br/>
-              <span>{info.effort_definition}</span>
-            </p>
-
-            <p>
-              <span><b>{info.frustration}</b></span> <span>{info.low_high}</span><br/>
-              <span>{info.frustration_definition}</span>
-            </p>
+            {factors && Object.values(factors).map((f, i) => (
+              <p key={`definition${i}`}>
+                <span><b>{f.name}</b></span> <span>{f.scale}</span><br/>
+                <span>{f.definition}</span>
+              </p>
+            ))}
           </div>
 
           <button type="button" className="bottom nasatlx-button" onClick={(e) => nextSection()}>{info && info.next}</button>
@@ -254,13 +300,13 @@ const dashLeft =
             <p>Tap the factor below that represents the more important contributor to workload for the psecific task that you recently performed</p>
             <div className="pairsParent pairsBottom">
               <div className="pairOption" onClick={(e) => nextPair()}>
-                {pairs && pairs[pair][0]}
-                <p>definition</p>
+                {factors && pairs && factors[pairs[pair][0] as TLXFactorKey].name}
+                <p>{factors && pairs && factors[pairs[pair][1] as TLXFactorKey].reference}</p>
               </div>
               <div className="divider" />
               <div className="pairOption" onClick={(e) => nextPair()}>
-                 {pairs && pairs[pair][1]}
-                 <p>definition</p>
+                 {factors && pairs && factors[pairs[pair][1] as TLXFactorKey].name}
+                 <p>{factors && pairs && factors[pairs[pair][1] as TLXFactorKey].reference}</p>
               </div>
             </div>
           </div>
@@ -280,60 +326,96 @@ const dashLeft =
         </div>
       }
 
+
       {
         (section == 5) &&
+        <div className="tlx-form">
+      {/* <h3>{currentCategory}</h3>  */}
+      <div className="left scales">
+        <span><b>{factors && factors[currentCategory as TLXFactorKey].name}</b></span> 
+        <span>{factors && factors[currentCategory as TLXFactorKey].question}</span> 
+      <TLXSlider
+        label=""
+        value={currentValue}
+        onChange={handleChange}
+      />
+      </div>
+
+      <button
+        className="nasatlx-button"
+        disabled={currentValue === null}
+        onClick={handleNext}
+      >
+        {currentIndex < categories.length - 1 ? 'Next' : 'Submit'}
+      </button>
+    </div>
+      }
+
+
+
+      {
+        (section == 10) &&
         <div className="">
-          <h4>{factor+1} of {Object.keys(factors).length}</h4>
-          <div className="left scales">
-            <span><b>{info.mental}</b></span>
-            <span>{info.mental_question}</span>
+          {factors && Object.keys(factors).map((f, i) => (
+            (true || factor == i) && 
+            <div>
+              <h4>{factor+1} of {Object.keys(factors).length}</h4>
+              <div className="left scales">
+                <span><b>{f}</b></span>
+                <span><b>{info.mental}</b></span>
+                <span>{info.mental_question}</span>
 
-            <div className="nasa-slider-container">
-              <div className="slider-bar"
-                onMouseDown={handleStart}
-                onMouseMove={handleMove}
-                onMouseUp={handleEnd}
-                onMouseLeave={handleEnd}
-                onTouchStart={handleStart}
-                onTouchMove={handleMove}
-                onTouchEnd={handleEnd}
-              >
-                <div className="slider-track" />
-                <div className="slider-ticks" ref={trackRef}>
-                  {Array.from({ length: NUM_TICKS}, (_, i) => (
-                    <div key={i} className="tick-container">
-                      <div
-                        className={`tick ${i} ${i === Math.floor(NUM_TICKS / 2) ? 'tick-middle' : ''}`}
-                      />
-                      {
-                        i==NUM_TICKS -1 &&
-                        <div
-                        className={`tick ${i+1} tick-end`}
-                      />
-                      }
+                <div className="nasa-slider-container">
+                  <div className="slider-bar"
+                    onMouseDown={handleStart}
+                    onMouseMove={handleMove}
+                    onMouseUp={handleEnd}
+                    onMouseLeave={handleEnd}
+                    onTouchStart={handleStart}
+                    onTouchMove={handleMove}
+                    onTouchEnd={handleEnd}
+                  >
+                    <div className="slider-track" />
+                    <div className="slider-ticks" ref={trackRef}>
+                      {Array.from({ length: NUM_TICKS}, (_, i) => (
+                        <div key={i} className="tick-container">
+                          <div
+                            className={`tick ${i} ${i === Math.floor(NUM_TICKS / 2) ? 'tick-middle' : ''}`}
+                          />
+                          {
+                            i==NUM_TICKS -1 &&
+                            <div
+                            className={`tick ${i+1} tick-end`}
+                          />
+                          }
+                        </div>
+                      ))}
+                      
                     </div>
-                  ))}
-                  
+
+                    {dashLeft !== null && (
+                      <div
+                        className="red-dash"
+                        style={{ left: `calc(${dashLeft}%)` }}
+                      />
+                    )}
+                    <div className="label-ends">
+                      <span className="label-left">Low</span>
+                      <span className="label-right">High</span>
+                    </div>
+                  </div>
+
+                    {/* <p className="selected-label">
+                      {selected !== null ? `Selected: ${Math.round(selected)}` : 'Tap or drag to select'}
+                    </p> */}
                 </div>
 
-                {dashLeft !== null && (
-                  <div
-                    className="red-dash"
-                    style={{ left: `calc(${dashLeft}%)` }}
-                  />
-                )}
-                <div className="label-ends">
-                  <span className="label-left">Low</span>
-                  <span className="label-right">High</span>
-                </div>
               </div>
 
-                {/* <p className="selected-label">
-                  {selected !== null ? `Selected: ${Math.round(selected)}` : 'Tap or drag to select'}
-                </p> */}
-            </div>
 
-          </div>
+            </div>
+          ))}
+          
           <button type="button" className="bottom nasatlx-button" onClick={(e) => nextScale()}>{info && info.next}</button>
         </div>
       }

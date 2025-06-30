@@ -43,14 +43,74 @@ const NASATLX_EN = {
 
 
   }, 
-  "pairs" : [
-    {0 : "Mental Demand"},
-    {1 : "Physical Demand"},
-    {2 : "Temporal Demand"},
-    {3 : "Peformance"},
-    {4 : "Effort"},
-    {5 : "Frustration"}
-  ]
+  "factors" : {
+    "MD" : 
+    {
+      "name": "Mental Demand", 
+      "definition" : "How much mental and perceptual activity was required (for example, thinking, deciding, calculating, remembering, looking, searching, etc)? Was the task easy or demanding, simple or complex, forgiving or exacting?", 
+      "question" : "How much mental and perceptual actiivty did you spend for the task?",
+      "reference" : "This refers to ",
+      "scale" : "(low/high)",
+      "upper" : "High",
+      "lower" : "Low",
+    }, 
+
+    "PD" : 
+    {
+      "name" : "Physical Demand", 
+      "definition" : "How much physical activity was required (for example, pushing, pulling, turning, controlling, activating, etc.)? Was the task easy or demanding, slow or brisk, slack or strenuous, restful or laborious?", 
+      "question" : "",
+      "reference" : "This refers to ",
+      "scale" : "(low/high)",
+      "upper" : "High",
+      "lower" : "Low",
+    },
+
+    "TD" : 
+    {
+      "name" : "Temporal Demand", 
+      "definition" : "How much time pressure did you feel due to the rate or pace at which the tasks or task elements occurred? Was the pace slow and leisurely or rapid and frantic?", 
+      "question" : "",
+      "reference" : "This refers to ",
+      "scale" : "(low/high)",
+      "upper" : "High",
+      "lower" : "Low",
+    },
+
+    "P" : 
+    {
+      "name" : "Peformance", 
+      "definition" : "How successful do you think you were in accomplishing the goals of the task set by the experimenter (or yourself)? How satisfied were you with your performance in accomplishing these goals?", 
+      "question" : "",
+      "reference" : "This refers to ",
+      "scale" : "(good/poor)",
+      "upper" : "Good",
+      "lower" : "Poor",
+    },
+
+    "E" : 
+    {
+      "name" : "Effort", 
+      "definition" : "How hard did you have to work (mentally and physically) to accomplish your level of performance?", 
+      "question" : "",
+      "reference" : "This refers to ",
+      "scale" : "(low/high)",
+      "upper" : "High",
+      "lower" : "Low",
+    },
+
+    "F" : 
+    {
+      "name" : "Frustration", 
+      "definition" : "How insecure, discouraged, irritated, stressed, and annoyed versus secure, gratified, content, relaxed, and complacent did you feel during the task?", 
+      "question" : "",
+      "reference" : "This refers to ",
+      "scale" : "(low/high)",
+      "upper" : "High",
+      "lower" : "Low",
+    },
+  }
+  
 }
 export default NASATLX_EN;
 
