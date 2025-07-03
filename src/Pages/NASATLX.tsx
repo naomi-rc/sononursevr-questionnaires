@@ -52,7 +52,7 @@ function NASATLX() {
 
   const NUM_TICKS = 20;
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const [selected, setSelected] = useState<number | null>(null);
+  const [totalWeightCount, setTotalWeightCount] = useState<number>(0);
   const [dragPosition, setDragPosition] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -116,19 +116,22 @@ interface Pair {
   }
 
   const nextSection = () => {
-    console.log("next section")
+    console.log("next section")    
     setSection(section+1)
   }
 
   const nextPair = (factor: string) => {
-    console.log("next pair")
     if(pairs === undefined) return;
     updateSelectedPairs(pair, factor)
-    if(pairs && pair + 1 >= pairs.length){
+    const updated = { ...selectedPairs, [pair]: factor };
+    console.log(updated)
+    if(pair + 1 >= pairs.length){
       //submit value
       setTimeout(() => {
-        nextSection();
-      }, 500);
+        console.log(updated)   
+        const weights = calculateWeights(updated)     
+        submitResponses('Weighting', weights);      
+      }, 1); //TODO : 500
             
     }
     else{
@@ -136,7 +139,6 @@ interface Pair {
         setPair(pair+1);
       }, 500);
     }
-    console.log(selectedPairs)
   }
 
   const nextScale = () => {
@@ -164,53 +166,6 @@ interface Pair {
 
   
 
-  
-  const getRelativePosition = (clientX: number): number => {
-    const track = trackRef.current;
-    if (!track) return 0;
-    const rect = track.getBoundingClientRect();
-    console.log(clientX + " - " + rect.left + " " + rect.width);
-    const x = clientX - rect.left;
-    console.log(Math.max(0, Math.min(x / rect.width, 1)));
-    return Math.max(0, Math.min(x / rect.width, 1)); // Clamp to [0, 1]
-  };
-
-  const handleStart = (e: React.MouseEvent | React.TouchEvent) => {
-    setIsDragging(true);
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const pos = getRelativePosition(clientX);
-    setDragPosition(pos);
-  };
-
-  const handleMove = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDragging) return;
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const pos = getRelativePosition(clientX);
-    setDragPosition(pos);
-  };
-
-  const handleEnd = () => {
-    if (dragPosition !== null) {
-      /* const raw = dragPosition * NUM_TICKS;
-      const snapped = Math.min(NUM_TICKS - 1, Math.max(0, raw)); */
-      const raw = dragPosition * (NUM_TICKS); // dragPosition ∈ [0,1]
-      //console.log(raw);
-      const snapped = Math.max(0, Math.min(NUM_TICKS, raw));
-      setSelected(snapped);
-      setSelected(snapped);
-      setDragPosition(null);
-    }
-    setIsDragging(false);
-  };
-
-const dashLeft =
-  dragPosition !== null
-    ? Math.min(dragPosition, 1) * 100
-    : selected !== null
-    ? ((selected) / NUM_TICKS) * 100
-    : null;
-
-
 
 
 
@@ -227,13 +182,15 @@ const [currentIndex, setCurrentIndex] = useState(0);
   const calculateWeights = (selectedScaleValues : {[key: number] : string}) => {
     let weights : Record<string, number> = {};
     let totalCount = 0;
+    console.log(Object.values(selectedScaleValues).length)
     Object.values(selectedScaleValues).forEach((val) => {
       weights[val] = (weights[val] || 0) + 1;
       totalCount++;
     });
     if(totalCount !== 15){
-      alert("Critical error");
+      alert("Critical error - Pairwise total count is not 15");
     }
+    setTotalWeightCount(totalCount)
     return weights;
   }
 
@@ -245,10 +202,12 @@ const [currentIndex, setCurrentIndex] = useState(0);
     } else {
       // All done, submit
      // onSubmit(values as Record<string, number>);
-     console.log("Responses submitted!")
+     submitResponses('Ratings', rawRatings);
+          console.log("Responses submitted!")
      console.log(selectedPairs)
      console.log(rawRatings)
      console.log(calculateWeights(selectedPairs))
+     navigate(`/${lang}/questionnaire-complete`);
      navigate(`/${lang}/questionnaire-complete`);
     }
   };
@@ -256,9 +215,102 @@ const [currentIndex, setCurrentIndex] = useState(0);
   const handleChange = (value: number) => {
     setRawRatings((prev) => ({
       ...prev,
-      [currentCategory]: Math.round(value),
+      [currentCategory]: value,
     }));
   };
+
+const calcualteTotalWeight = (responses : Record<string, number>) => {
+   return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, Math.round(value).toString()]));
+}
+
+const stringResponses = (responses : Record<string, number | null>) => {
+   return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, value === null? "0" : value.toString()]));
+}
+
+const roundedResponses = (responses : Record<string, number | null>) => {
+   return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, value === null? "0" : Math.round(value).toString()]));
+}
+
+  const submitResponses = (part : string, responses : Record<string, number | null>) => {
+
+    const url  = "https://script.google.com/macros/s/AKfycbzEzzTTe6MJ5mflNiBViQPb_ZiUVprDgGSwm08rRjyx2B3m7c_W0MNZ3os5VXOGopyG/exec";
+    
+    if (id && trial && hapticCase && lang) {    
+
+      setLoading(true);
+      let payload  = null;
+      if (part === 'Weighting') {
+
+        if(responses){
+
+          if(true) {
+            const res = stringResponses(responses)
+            payload = new URLSearchParams({
+              ParticipantID : id,
+              Language : lang,
+              Trial : trial,
+              HapticCase : hapticCase,
+              DateTime : Date().toString(),
+              Part : "Weighting", 
+              MentalWeight : res['MD'],
+              PhysicalWeight : res['PD'],
+              TemporalWeight : res['TD'],
+              PerformanceWeight : res['P'],
+              EffortWeight : res['E'],
+              FrustrationWeight: res['F'],
+              WeightCheck : totalWeightCount.toString()
+            }).toString();
+setLoading(false)
+nextSection();  
+            /* fetch(url, {
+              method: "POST",
+              headers: {"Content-Type": "application/x-www-form-urlencoded"},
+              body: (payload)
+            }).then(res=>res.text()).then(data=>{
+              console.log(data);
+              setLoading(false)
+              nextSection();  
+            }).catch(error=> console.log(error)) */
+          }
+        }
+
+      }
+      else if(part === 'Ratings'){
+
+        if(responses){
+          const res = roundedResponses(responses)
+          payload = new URLSearchParams({
+            ParticipantID : id,
+            Language : lang,
+            Trial : trial,
+            HapticCase : hapticCase,
+            DateTime : Date().toString(),
+            Part : "Ratings",
+            MentalRating: res['MD'],
+            PhysicalRating: res['PD'],
+            TemporalRating: res['TD'],
+            PerformanceRating: res['P'],
+            EffortRating: res['E'],
+            FrustrationRating: res['F']
+          }).toString();
+
+          /* fetch(url, {
+            method: "POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: (payload)
+          }).then(res=>res.text()).then(data=>{
+            console.log(data);
+            navigate(`/${lang}/questionnaire-complete`);
+          }).catch(error=> console.log(error)) */
+        }
+        
+      }
+    }
+    else {
+      alert("Critical error");
+      return;
+    } 
+  }
 
 
   return (
@@ -282,6 +334,15 @@ const [currentIndex, setCurrentIndex] = useState(0);
         </h3>
       </div>
     
+      {
+          loading && (
+          <div className="loading-overlay">
+            <div className="loading-spinner"></div>
+          </div>
+        )
+      }
+
+
       {
         (section == 0) && 
         <div>
@@ -331,7 +392,7 @@ const [currentIndex, setCurrentIndex] = useState(0);
           <h4>{pair+1} of {pairs && pairs.length}</h4>
           <div className="page left">
             <p>Tap the factor below that represents the more important contributor to workload for the psecific task that you recently performed</p>
-            
+            {Object.values(selectedPairs)}
             {pairs && factors && selectedPairs && pairs.map((p, i) => (
               (pair == i) && 
               <div key={`pair${pair}`} className="pairsParent pairsBottom">
@@ -397,9 +458,9 @@ const [currentIndex, setCurrentIndex] = useState(0);
         onChange={handleChange}
       />
       </div>
-        {/* <p className="selected-label">
+         <p className="selected-label">
           {currentValue !== null ? `Selected: ${Math.round(currentValue)}` : 'Tap or drag to select'}
-        </p> */}
+        </p> 
       <button
         className={`nasatlx-button ${currentValue === null? 'disabled': ''}`}
         disabled={currentValue === null}
@@ -411,7 +472,7 @@ const [currentIndex, setCurrentIndex] = useState(0);
       }
 
 
-
+{/* 
       {
         (section == 10) &&
         <div className="ratingScales">
@@ -464,9 +525,9 @@ const [currentIndex, setCurrentIndex] = useState(0);
                     </div>
                   </div>
 
-                    {/* <p className="selected-label">
+                    <p className="selected-label">
                       {selected !== null ? `Selected: ${Math.round(selected)}` : 'Tap or drag to select'}
-                    </p> */}
+                    </p> 
                 </div>
 
               </div>
@@ -477,7 +538,7 @@ const [currentIndex, setCurrentIndex] = useState(0);
           
           <button type="button" className="bottom nasatlx-button" onClick={(e) => nextScale()}>{info && info.next}</button>
         </div>
-      }
+      } */}
 
 
     

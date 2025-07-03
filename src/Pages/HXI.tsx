@@ -160,12 +160,12 @@ const HXI = () => {
         </h3>
       </div>
       
-        <div className="questionnaire-description">
-          <p>{info.instructions}</p>
-          <p>{info.clarityDescription}</p>
-          <p className="indent"><b>{info.hapticSensationsDefinition}</b></p>
-          <p className="indent"><b>{info.otherSensesDefinition}</b></p>
-        </div>
+      <div className="questionnaire-description">
+        <p>{info.instructions}</p>
+        <p>{info.clarityDescription}</p>
+        <p className="indent"><b>{info.hapticSensationsDefinition}</b></p>
+        <p className="indent"><b>{info.otherSensesDefinition}</b></p>
+      </div>
         
         {
           !understood &&
