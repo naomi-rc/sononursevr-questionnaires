@@ -13,8 +13,10 @@ export const TLXSlider: React.FC<TLXSliderProps> = ({ label, value, onChange }) 
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [dragPosition, setDragPosition] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [selected, setSelected] = useState<number | null>(null);
 
-  const getRelativePosition = (clientX: number): number => {
+
+   const getRelativePosition = (clientX: number): number => {
     const track = trackRef.current;
     if (!track) return 0;
     const rect = track.getBoundingClientRect();
@@ -39,19 +41,66 @@ export const TLXSlider: React.FC<TLXSliderProps> = ({ label, value, onChange }) 
   const handleEnd = () => {
     if (dragPosition !== null) {
       const raw = dragPosition * NUM_TICKS;
-      const snapped = Math.max(0, Math.min(NUM_TICKS - 1, Math.floor(raw)));
+      const snapped = Math.max(0, Math.min(NUM_TICKS, raw));
       onChange(snapped);
+      setDragPosition(null);
+      setSelected(Math.round(snapped));
+      console.log(selected)
+    }
+    setIsDragging(false);
+  }; 
+
+  const dashLeft =
+    dragPosition !== null
+      ? dragPosition * 100
+      : value !== null
+      ? ((value) / NUM_TICKS) * 100
+      : null; 
+
+/* 
+const getRelativePosition = (clientX: number): number => {
+    const track = trackRef.current;
+    if (!track) return 0;
+    const rect = track.getBoundingClientRect();
+    console.log(clientX + " - " + rect.left + " " + rect.width);
+    const x = clientX - rect.left;
+    console.log(Math.max(0, Math.min(x / rect.width, 1)));
+    return Math.max(0, Math.min(x / rect.width, 1)); // Clamp to [0, 1]
+  };
+
+  const handleStart = (e: React.MouseEvent | React.TouchEvent) => {
+    setIsDragging(true);
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const pos = getRelativePosition(clientX);
+    setDragPosition(pos);
+  };
+
+  const handleMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const pos = getRelativePosition(clientX);
+    setDragPosition(pos);
+  };
+
+  const handleEnd = () => {
+    if (dragPosition !== null) {
+      // const raw = dragPosition * NUM_TICKS;
+      //const snapped = Math.min(NUM_TICKS - 1, Math.max(0, raw));
+      const raw = dragPosition * (NUM_TICKS); // dragPosition ∈ [0,1]
+      //console.log(raw);
+      const snapped = Math.max(0, Math.min(NUM_TICKS, raw));
+      setSelected(snapped);
       setDragPosition(null);
     }
     setIsDragging(false);
   };
 
   const dashLeft =
-    dragPosition !== null
-      ? dragPosition * 100
-      : value !== null
-      ? ((value + 0.5) / NUM_TICKS) * 100
-      : null;
+  dragPosition !== null
+    ? Math.min(dragPosition, 1) * 100
+    : value !== null
+    ? ((value) / NUM_TICKS) * 100
+    : null; */
 
   return (
     <div className="nasa-slider-container">
@@ -94,9 +143,9 @@ export const TLXSlider: React.FC<TLXSliderProps> = ({ label, value, onChange }) 
                     </div>
                   </div>
 
-                    {/* <p className="selected-label">
-                      {selected !== null ? `Selected: ${Math.round(selected)}` : 'Tap or drag to select'}
-                    </p> */}
+                    <p className="selected-label">
+                      {selected !== null ? `Selected: ${selected}` : 'Tap or drag to select'}
+                    </p>
                 </div>
   );
 };

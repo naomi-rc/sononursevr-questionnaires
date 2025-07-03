@@ -216,12 +216,26 @@ const dashLeft =
 
 
 const [currentIndex, setCurrentIndex] = useState(0);
-  const [values, setValues] = useState<Record<string, number | null>>(
+  const [rawRatings, setRawRatings] = useState<Record<string, number | null>>(
     Object.fromEntries(categories.map((cat) => [cat, null]))
   );
 
   const currentCategory = categories[currentIndex];
-  const currentValue = values[currentCategory];
+  const currentValue = rawRatings[currentCategory];
+
+
+  const calculateWeights = (selectedScaleValues : {[key: number] : string}) => {
+    let weights : Record<string, number> = {};
+    let totalCount = 0;
+    Object.values(selectedScaleValues).forEach((val) => {
+      weights[val] = (weights[val] || 0) + 1;
+      totalCount++;
+    });
+    if(totalCount !== 15){
+      alert("Critical error");
+    }
+    return weights;
+  }
 
   const handleNext = () => {
     if (currentValue === null) return;
@@ -232,13 +246,17 @@ const [currentIndex, setCurrentIndex] = useState(0);
       // All done, submit
      // onSubmit(values as Record<string, number>);
      console.log("Responses submitted!")
+     console.log(selectedPairs)
+     console.log(rawRatings)
+     console.log(calculateWeights(selectedPairs))
+     navigate(`/${lang}/questionnaire-complete`);
     }
   };
 
   const handleChange = (value: number) => {
-    setValues((prev) => ({
+    setRawRatings((prev) => ({
       ...prev,
-      [currentCategory]: value,
+      [currentCategory]: Math.round(value),
     }));
   };
 
@@ -379,7 +397,9 @@ const [currentIndex, setCurrentIndex] = useState(0);
         onChange={handleChange}
       />
       </div>
-
+        {/* <p className="selected-label">
+          {currentValue !== null ? `Selected: ${Math.round(currentValue)}` : 'Tap or drag to select'}
+        </p> */}
       <button
         className={`nasatlx-button ${currentValue === null? 'disabled': ''}`}
         disabled={currentValue === null}
