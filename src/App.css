@@ -169,6 +169,7 @@ body {
 
 
 .NASATLX {
+  
   .nasatlx-button {
     background-color: white;
     border-color: #3093ff;
@@ -182,7 +183,11 @@ body {
   }
 
   .nasatlx-button:hover {
-    color: #3094ff5f;
+    color: #3094ffb4;
+  }
+
+  .nasatlx-button.disabled {
+    color: #3094ff34; 
   }
 
   .bottom {
@@ -195,115 +200,118 @@ body {
     text-align: left;
   }
 
-  .scales {
-    min-height: 50vh;
-    display: flex;
-    flex-direction: column;/* 
-    align-items: center; */
-    justify-content: center;
-    font-size: calc(5px + 2vmin);
+  .ratingScales {
+    .scales {
+      min-height: 50vh;
+      display: flex;
+      flex-direction: column;/* 
+      align-items: center; */
+      justify-content: center;
+      font-size: calc(5px + 2vmin);
+    }
+
+    .nasa-slider-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 40px auto;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    .slider-bar {
+      position: relative;
+      height: 70px;
+      
+      margin-bottom: 20px;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .slider-track {
+      position: absolute;
+      top: 70%;
+      left: 0;
+      right: 0;
+      height: 0.1em;
+      background-color: #8d807f;
+      transform: translateY(-50%);
+      z-index: 1;
+      margin: 0 1px;
+    }
+
+    .slider-ticks {
+      display: flex;
+      position: relative;
+      z-index: 2;
+      
+      padding: 0;
+      margin: 0;
+    }
+
+    .tick-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    .tick {
+      width: 0.1em;
+      height: 20px;
+      background-color: #8d807f;
+      margin-top: 29px;
+    }
+
+    .tick-middle {
+      height: calc(20px*(10/3));
+      margin-top: -16px;
+    }
+
+
+    .tick-end {
+      margin-top: -20px;
+      margin-left: 92%;
+    }
+
+
+    .red-dash {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 40px;
+      background-color: red;
+      transition: left 0.05s ease-out;
+      z-index: 3;
+      margin-top: 10px;
+    }
+
+    .label-ends {
+      position: absolute;
+      bottom: -20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #333;
+      padding: 0 4px;
+    }
+
+    .label-left {
+      text-align: left;
+    }
+
+    .label-right {
+      text-align: right;
+    }
+
+    .selected-label {
+      font-size: 16px;
+      color: #333;
+    }
   }
+  
 
-  .nasa-slider-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 40px auto;
-    font-family: sans-serif;
-    text-align: center;
-  }
-
-  .slider-bar {
-    position: relative;
-    height: 70px;
-    
-    margin-bottom: 20px;
-    touch-action: none;
-    user-select: none;
-  }
-
-  .slider-track {
-    position: absolute;
-    top: 70%;
-    left: 0;
-    right: 0;
-    height: 0.1em;
-    background-color: #8d807f;
-    transform: translateY(-50%);
-    z-index: 1;
-    margin: 0 1px;
-  }
-
-  .slider-ticks {
-    display: flex;
-    position: relative;
-    z-index: 2;
-    
-    padding: 0;
-    margin: 0;
-  }
-
-  .tick-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    pointer-events: none;
-  }
-
-  .tick {
-    width: 0.1em;
-    height: 20px;
-    background-color: #8d807f;
-    margin-top: 29px;
-  }
-
-  .tick-middle {
-    height: calc(20px*(10/3));
-    margin-top: -16px;
-  }
-
-
-  .tick-end {
-    margin-top: -20px;
-    margin-left: 92%;
-  }
-
-
-  .red-dash {
-    position: absolute;
-    top: 0;
-    width: 2px;
-    height: 40px;
-    background-color: red;
-    transition: left 0.05s ease-out;
-    z-index: 3;
-    margin-top: 20px;
-  }
-
-  .label-ends {
-    position: absolute;
-    bottom: -20px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #333;
-    padding: 0 4px;
-  }
-
-  .label-left {
-    text-align: left;
-  }
-
-  .label-right {
-    text-align: right;
-  }
-
-  .selected-label {
-    font-size: 16px;
-    color: #333;
-  }
-
-  .pairwiseFactors{
+  .pairwiseFactors {
     html, body {
       margin: 0;
       padding: 0;
@@ -315,53 +323,70 @@ body {
       flex-direction: column;
     }
 
-.topSection {
-  padding: 20px;
-  text-align: center;
-}
+    .topSection {
+      padding: 20px;
+      text-align: center;
+    }
 
-.pairsParent {
-  height: 40vh;
-  margin-top: 30%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 94%;
-}
+    .pairsParent {
+      height: 40vh;
+      margin-top: 30%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 94%;
+    }
 
-.pairOption {
-  flex: 1;
-  display: flex;
-  flex-direction: column; 
-  align-items: center; /* vertical center */
-  justify-content: center; /* horizontal center */
-  font-size: 20px;
-  text-align: center;
-  padding: 0 16px;
-  box-sizing: border-box;
-}
+    .pairOption {
+      flex: 1;
+      display: flex;
+      flex-direction: column; 
+      align-items: center; /* vertical center */
+      justify-content: center; /* horizontal center */
+      font-size: 20px;
+      text-align: center;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
 
-.pairOption p {
-  margin-top: 50px;
-  font-size: 16px;
-  color: #555;
-  align-self: flex-start; 
-  text-align: left;
+    .pairOption p {
+      margin-top: 50px;
+      font-size: 16px;
+      color: #555;
+      align-self: flex-start; 
+      text-align: left;
+    }
 
-}
+    .divider {
+      height: 1px;
+      background-color: #aaa;
+      width: 100%;
+    }
 
-.divider {
-  height: 1px;
-  background-color: #aaa;
-  width: 100%;
-}
+    .pairsBottom {
+        position: fixed;
+        bottom: 5%;
+        left: 2%;
+    }
 
-.pairsBottom {
-    position: fixed;
-    bottom: 5%;
-    left: 2%;
-  }
+    /* Left-aligned checkmark */
+    .checkmark {
+      position: absolute;
+      left: 5%;
+      color: #027aff;
+      font-size: 20px;
+    }
 
+    /* Centered factor name */
+    .factorLabel {
+      text-align: center;
+      flex: 1;
+      cursor: default;
+    }
+
+    .selectedFactor{
+      color: #1e6eff;
+    }
   }
 }
 

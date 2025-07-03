@@ -48,7 +48,7 @@ function NASATLX() {
   const [info, setInfo] = React.useState<any>(); 
   const [factors, setFactors] = useState<TLXFactors>();
   const [agreementLevel, setAgreementLevel] = React.useState<string[] | undefined>(); 
-  const [statementAnswers, setStatementAnswers] = React.useState<{[key: string] : string}>(); 
+
 
   const NUM_TICKS = 20;
   const trackRef = useRef<HTMLDivElement | null>(null);
@@ -60,6 +60,7 @@ function NASATLX() {
   const [pair, setPair] = useState<number>(0);
   const [factor, setFactor] = useState<number>(0);
   const [pairs, setPairs] = useState<string[][]>();
+  const [selectedPairs, setSelectedPairs] = React.useState<{[key: number] : string}>({}); 
   enum Section {
     Instructions,
     Definitions,
@@ -91,6 +92,10 @@ interface Pair {
     navigate(`/${value}/nasa-tlx/${hapticCase}/${id}/${trial}`);
   }
 
+  const updateSelectedPairs = (key : number, value : string) => {
+    setSelectedPairs(prevDictionary => ({ ...prevDictionary, [key] : value }));    
+  }
+
   const previousSection = () => {
     if(section==3 && (pair > 0)){
       console.log("previous pair")
@@ -115,14 +120,23 @@ interface Pair {
     setSection(section+1)
   }
 
-  const nextPair = () => {
+  const nextPair = (factor: string) => {
     console.log("next pair")
+    if(pairs === undefined) return;
+    updateSelectedPairs(pair, factor)
     if(pairs && pair + 1 >= pairs.length){
-      nextSection();
+      //submit value
+      setTimeout(() => {
+        nextSection();
+      }, 500);
+            
     }
     else{
-      setPair(pair+1);
+      setTimeout(() => {
+        setPair(pair+1);
+      }, 500);
     }
+    console.log(selectedPairs)
   }
 
   const nextScale = () => {
@@ -217,6 +231,7 @@ const [currentIndex, setCurrentIndex] = useState(0);
     } else {
       // All done, submit
      // onSubmit(values as Record<string, number>);
+     console.log("Responses submitted!")
     }
   };
 
@@ -298,17 +313,39 @@ const [currentIndex, setCurrentIndex] = useState(0);
           <h4>{pair+1} of {pairs && pairs.length}</h4>
           <div className="page left">
             <p>Tap the factor below that represents the more important contributor to workload for the psecific task that you recently performed</p>
-            <div className="pairsParent pairsBottom">
-              <div className="pairOption" onClick={(e) => nextPair()}>
-                {factors && pairs && factors[pairs[pair][0] as TLXFactorKey].name}
-                <p>{factors && pairs && factors[pairs[pair][1] as TLXFactorKey].reference}</p>
+            
+            {pairs && factors && selectedPairs && pairs.map((p, i) => (
+              (pair == i) && 
+              <div key={`pair${pair}`} className="pairsParent pairsBottom">
+                <div className="pairOption" onClick={(e) => nextPair(p[0])}>
+                  <div className="factorChoice">
+                   {selectedPairs[i]===p[0] && <span className="checkmark">✔</span>}
+                    <span className={`factorLabel ${selectedPairs[i]===p[0]? 'selectedFactor': ''}`}>{factors[p[0] as TLXFactorKey].name}</span>
+                  </div>
+                  <p>{factors[p[0] as TLXFactorKey].reference}</p>
+                </div>
+                <div className="divider" />
+                <div className="pairOption" onClick={(e) => nextPair(p[1])}>
+                  <div className="factorChoice">
+                   {selectedPairs[i]===p[1] && <span className="checkmark">✔</span>}
+                    <span className={`factorLabel ${selectedPairs[i]===p[1]? 'selectedFactor': ''}`}>{factors[p[1] as TLXFactorKey].name}</span>
+                  </div>
+                  <p>{factors[p[1] as TLXFactorKey].reference}</p>
+                </div>
               </div>
-              <div className="divider" />
-              <div className="pairOption" onClick={(e) => nextPair()}>
-                 {factors && pairs && factors[pairs[pair][1] as TLXFactorKey].name}
-                 <p>{factors && pairs && factors[pairs[pair][1] as TLXFactorKey].reference}</p>
-              </div>
-            </div>
+            ))}
+
+            {/* <div className="pairsParent pairsBottom">
+                <div className="pairOption" onClick={(e) => nextPair()}>
+                  {factors && pairs && factors[pairs[pair][0] as TLXFactorKey].name}
+                  <p>{factors && pairs && factors[pairs[pair][1] as TLXFactorKey].reference}</p>
+                </div>
+                <div className="divider" />
+                <div className="pairOption" onClick={(e) => nextPair()}>
+                  {factors && pairs && factors[pairs[pair][1] as TLXFactorKey].name}
+                  <p>{factors && pairs && factors[pairs[pair][1] as TLXFactorKey].reference}</p>
+                </div>
+              </div> */}
           </div>
         </div>
       }
@@ -321,6 +358,8 @@ const [currentIndex, setCurrentIndex] = useState(0);
             <p>{info.scales}</p>
             <p>{info.evaluate}</p>
             <p>{info.consider}</p>
+           <p>{selectedPairs && Object.keys(selectedPairs).length}</p>
+           <p>{selectedPairs && selectedPairs[0]}</p>
           </div>
           <button type="button" className="bottom nasatlx-button" onClick={(e) => nextSection()}>{info && info.next}</button>
         </div>
@@ -329,7 +368,7 @@ const [currentIndex, setCurrentIndex] = useState(0);
 
       {
         (section == 5) &&
-        <div className="tlx-form">
+        <div className="ratingScales">
       {/* <h3>{currentCategory}</h3>  */}
       <div className="left scales">
         <span><b>{factors && factors[currentCategory as TLXFactorKey].name}</b></span> 
@@ -342,7 +381,7 @@ const [currentIndex, setCurrentIndex] = useState(0);
       </div>
 
       <button
-        className="nasatlx-button"
+        className={`nasatlx-button ${currentValue === null? 'disabled': ''}`}
         disabled={currentValue === null}
         onClick={handleNext}
       >
@@ -355,7 +394,7 @@ const [currentIndex, setCurrentIndex] = useState(0);
 
       {
         (section == 10) &&
-        <div className="">
+        <div className="ratingScales">
           {factors && Object.keys(factors).map((f, i) => (
             (true || factor == i) && 
             <div>
