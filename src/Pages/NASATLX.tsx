@@ -54,6 +54,7 @@ function NASATLX() {
 
   const {lang, id, trial, hapticCase } = useParams();
   const [usePairwise] =  useLocalStorage('usePairwise', "true"); 
+  const [studyName] =  useLocalStorage('studyName', ''); 
   const [loading, setLoading] = React.useState(false);
 
   const [info, setInfo] = React.useState<any>(); 
@@ -220,6 +221,7 @@ function NASATLX() {
               Language : lang,
               Trial : trial,
               HapticCase : hapticCase,
+              StudyName : studyName,
               DateTime : Date().toString(),
               Part : "Weighting", 
               MentalWeight : res['MD'],
@@ -250,6 +252,7 @@ function NASATLX() {
               Language : lang,
               Trial : trial,
               HapticCase : hapticCase,
+              StudyName : studyName,
               DateTime : Date().toString(),
               Part : "Ratings",
               MentalRating: res['MD'],

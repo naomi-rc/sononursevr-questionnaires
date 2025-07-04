@@ -3,6 +3,7 @@ import '../App.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import HXI_EN from "../Questions/hxi/en";
 import HXI_FR from "../Questions/hxi/fr";
+import { useLocalStorage } from '../useLocalStorage';
 
 type Question = {[key: string]: any};
 
@@ -19,6 +20,7 @@ const HXI = () => {
   const [questions, setQuestions] = React.useState<{}[] | undefined>(); 
   const [agreementLevel, setAgreementLevel] = React.useState<string[] | undefined>(); 
   const [statementAnswers, setStatementAnswers] = React.useState<{[key: string] : string}>(); 
+  const [studyName] =  useLocalStorage('studyName', ''); 
   //const [factorScores, setsetFactorScores] = React.useState<string[]>(); 
 
   const factors = [["Q18", "Q13", "Q2", "Q11"], //autotelics
@@ -110,6 +112,7 @@ const HXI = () => {
           Language : lang,
           Trial : trial,
           HapticCase : hapticCase,
+          StudyName : studyName,
           DateTime : Date().toString(),
           Autotelics : scores.factorScores[0],
           Involvement : scores.factorScores[1],
@@ -143,7 +146,7 @@ const HXI = () => {
     info &&
     <div className="HXI App">
         <div className="header">
-        <button type="button" className="textButton" >{info.back}</button>
+        <button type="button" className="textButton" onClick={(e) => {navigate(`/`);}}>{info.back}</button>
         <select name="cars" className="languageDropDown" value={lang} onChange={(e) => {changeLanguage(e.target.value)}}>
           <option value="fr">FR</option>
           <option value="en">EN</option>
