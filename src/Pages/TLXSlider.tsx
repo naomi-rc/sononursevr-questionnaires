@@ -16,7 +16,7 @@ export const TLXSlider: React.FC<TLXSliderProps> = ({ label, value, factor, modi
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [dragPosition, setDragPosition] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [selected, setSelected] = useState<number | null>(null);
+  /* const [selected, setSelected] = useState<number | null>(null); */
 
 
    const getRelativePosition = (clientX: number): number => {
@@ -50,7 +50,7 @@ export const TLXSlider: React.FC<TLXSliderProps> = ({ label, value, factor, modi
       const snapped = Math.max(0, Math.min(NUM_TICKS, raw));
       onChange(snapped);
       setDragPosition(null);
-      setSelected(Math.round(snapped));
+      //setSelected(Math.round(snapped));
     }
     setIsDragging(false);
   }; 
