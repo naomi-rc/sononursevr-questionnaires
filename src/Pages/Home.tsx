@@ -82,7 +82,7 @@ function Home() {
         </div>
 
         <div className="inputData">
-          <label>Use Pairwise Comparisons :</label>
+          <label>Use Pairwise Comparisons for NASA-TLX:</label>
           <input type="checkbox" checked={usePairwise==="true"} required onChange={(e) => setUsePairwise(e.target.checked.toString())} />
         </div>
 

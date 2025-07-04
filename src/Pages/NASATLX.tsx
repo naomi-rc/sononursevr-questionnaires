@@ -8,12 +8,13 @@ import { useLocalStorage } from "../useLocalStorage";
 
 
 enum Sections {
-  Up = 1,
-  Down,
-  Left,
-  Right,
+  Instructions = 0,
+  Definitions,
+  PairwiseIntroduction,
+  PairwiseSelection,
+  RatingsIntroduction,
+  RatingsSelection
 }
-
 
 const categories = [
   'MD',
@@ -38,6 +39,11 @@ type TLXFactorKey = "MD" | "PD" | "TD" | "P" | "E" | "F";
 
 type TLXFactors = Record<TLXFactorKey, TLXFactor>;
 
+const pairsList = 
+  [["E","P"], ["TD", "F"], ["TD", "E"], ["PD", "F"], ["P", "F"], 
+  ["PD", "TD"], ["PD", "P"], ["TD", "MD"], ["F", "E"], ["P", "MD"], 
+  ["P", "TD"], ["MD", "E"], ["MD", "PD"], ["E", "PD"], ["F", "MD"]]
+
 
 
 function NASATLX() {
@@ -45,32 +51,36 @@ function NASATLX() {
   let navigate = useNavigate();
 
   const {lang, id, trial, hapticCase } = useParams();
-  const [usePairwise, setUsePairwise] =  useLocalStorage('usePairwise', "true"); 
+  const [usePairwise] =  useLocalStorage('usePairwise', "true"); 
   const [loading, setLoading] = React.useState(false);
+
   const [info, setInfo] = React.useState<any>(); 
   const [factors, setFactors] = useState<TLXFactors>();
-
-
-
-  const [section, setSection] = useState<number>(0);
+  const [section, setSection] = useState<Sections>(0);
   const [pair, setPair] = useState<number>(0);
   const [factor, setFactor] = useState<number>(0);
   const [pairs, setPairs] = useState<string[][]>();
   const [selectedPairs, setSelectedPairs] = React.useState<{[key: number] : string}>({}); 
-  enum Section {
-    Instructions,
-    Definitions,
-    Pairwise,
-    Rating
-  }
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [rawRatings, setRawRatings] = useState<Record<string, number | null>>(
+    Object.fromEntries(categories.map((cat) => [cat, null]))
+  );
+
+  const currentCategory = categories[currentIndex];
+  const currentValue = rawRatings[currentCategory];
 
 
-  
-
-  const pairsList = 
-  [["E","P"], ["TD", "F"], ["TD", "E"], ["PD", "F"], ["P", "F"], 
-  ["PD", "TD"], ["PD", "P"], ["TD", "MD"], ["F", "E"], ["P", "MD"], 
-  ["P", "TD"], ["MD", "E"], ["MD", "PD"], ["E", "PD"], ["F", "MD"]]
+  useEffect(() => {
+    if(lang==='fr'){
+      setInfo(NASATLX_FR.info);
+    }
+    else{
+      setInfo(NASATLX_EN.info);
+      setFactors(NASATLX_EN.factors);
+    }
+    setPairs(shuffle(pairsList));
+  }, [lang]);
 
 
   const shuffle = (array : string[][]) => { 
@@ -78,7 +88,6 @@ function NASATLX() {
   }; 
 
   const changeLanguage = (value : string) => {
-    console.log(value);
     navigate(`/${value}/nasa-tlx/${hapticCase}/${id}/${trial}`);
   }
 
@@ -87,53 +96,43 @@ function NASATLX() {
   }
 
   const previousSection = () => {
-    if(section==3 && (pair > 0)){
-      console.log("previous pair")
+    if(section === Sections.PairwiseSelection && (pair > 0)){
       setPair(pair-1);
     }
-    else if(section === 0){
+    else if(section === Sections.Instructions){
       navigate(`/`);
     }
-    else if(section === 5 && (currentIndex > 0 || factor > 0)){
-      console.log("previous pair")
+    else if(section === Sections.RatingsSelection && (currentIndex > 0 || factor > 0)){
       setFactor(factor-1);
       setCurrentIndex(currentIndex - 1);
     }
-    else if(usePairwise === "false" && section === 4){
-      setSection(section-3)
+    else if(usePairwise === "false" && section === Sections.RatingsIntroduction){
+      setSection(Sections.Definitions)
     }
     else{
-      console.log("previous section")
       setSection(Math.max(0, section-1))
     }
   }
 
   const nextSection = () => {
-    console.log("next section")  
-    if(usePairwise === "false" && section == 1)  {
-      setSection(section+3)
+    if(usePairwise === "false" && section === Sections.Definitions)  {
+      setSection(Sections.RatingsIntroduction)
     }
     else{
       setSection(section+1)
     }
   }
 
-  const previousPair = () => {
-    setPair(pair-1);
-  }
-
   const nextPair = (factor: string) => {
     if(pairs === undefined) return;
+
     updateSelectedPairs(pair, factor)
     const updated = { ...selectedPairs, [pair]: factor };
-    console.log(updated)
     if(pair + 1 >= pairs.length){
-      //submit value
-      setTimeout(() => {
-        console.log(updated)   
+      setTimeout(() => { 
         const weights = calculateWeights(updated)     
         submitResponses('Weighting', weights);      
-      }, 1); //TODO : 500
+      }, 500); 
             
     }
     else{
@@ -144,38 +143,22 @@ function NASATLX() {
   }
 
 
-  useEffect(() => {
-    if(lang==='fr'){
-      setInfo(NASATLX_FR.info);
-      //setFactors(NASATLX_FR.factors);
-    }
-    else{
-      setInfo(NASATLX_EN.info);
-      setFactors(NASATLX_EN.factors);
-    }
-    setPairs(shuffle(pairsList));
-  }, [lang]);
+  const calcualteTotalWeight = (responses : Record<string, number | null>) => {
+    return Object.values(responses).reduce((sum : number, val) => sum + (val?? 0), 0);
+  }
 
+  const stringResponses = (responses : Record<string, number | null>) => {
+    return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, value === null? "0" : value.toString()]));
+  }
 
-  
-
-
-
-
-
-const [currentIndex, setCurrentIndex] = useState(0);
-  const [rawRatings, setRawRatings] = useState<Record<string, number | null>>(
-    Object.fromEntries(categories.map((cat) => [cat, null]))
-  );
-
-  const currentCategory = categories[currentIndex];
-  const currentValue = rawRatings[currentCategory];
+  const roundedResponses = (responses : Record<string, number | null>) => {
+    return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, value === null? "0" : Math.round(value).toString()]));
+  }
 
 
   const calculateWeights = (selectedScaleValues : {[key: number] : string}) => {
     let weights : Record<string, number> = {};
     let totalCount = 0;
-    console.log(Object.values(selectedScaleValues).length)
     Object.values(selectedScaleValues).forEach((val) => {
       weights[val] = (weights[val] || 0) + 1;
       totalCount++;
@@ -191,14 +174,9 @@ const [currentIndex, setCurrentIndex] = useState(0);
 
     if (currentIndex < categories.length - 1) {
       setCurrentIndex(currentIndex + 1);
-    } else {
-     submitResponses('Ratings', rawRatings);
-          console.log("Responses submitted!")
-     console.log(selectedPairs)
-     console.log(rawRatings)
-     console.log(calculateWeights(selectedPairs))
-     navigate(`/${lang}/questionnaire-complete`);
-     navigate(`/${lang}/questionnaire-complete`);
+    } 
+    else {
+      submitResponses('Ratings', rawRatings);
     }
   };
 
@@ -209,18 +187,6 @@ const [currentIndex, setCurrentIndex] = useState(0);
     }));
   };
 
-const calcualteTotalWeight = (responses : Record<string, number | null>) => {
-   return Object.values(responses).reduce((sum : number, val) => sum + (val?? 0), 0);
-}
-
-const stringResponses = (responses : Record<string, number | null>) => {
-   return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, value === null? "0" : value.toString()]));
-}
-
-const roundedResponses = (responses : Record<string, number | null>) => {
-   return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, value === null? "0" : Math.round(value).toString()]));
-}
-
   const submitResponses = (part : string, responses : Record<string, number | null>) => {
 
     const url  = "https://script.google.com/macros/s/AKfycbzEzzTTe6MJ5mflNiBViQPb_ZiUVprDgGSwm08rRjyx2B3m7c_W0MNZ3os5VXOGopyG/exec";
@@ -228,15 +194,13 @@ const roundedResponses = (responses : Record<string, number | null>) => {
     if (id && trial && hapticCase && lang) {    
 
       setLoading(true);
-      let payload  = null;
-      if (part === 'Weighting') {
 
-        if(responses){
+      if (responses) {
 
-          if(true) {
+        if(part === 'Weighting'){
             const res = stringResponses(responses)
             const totalWeight = calcualteTotalWeight(responses)
-            payload = new URLSearchParams({
+            const payload = new URLSearchParams({
               ParticipantID : id,
               Language : lang,
               Trial : trial,
@@ -257,43 +221,39 @@ const roundedResponses = (responses : Record<string, number | null>) => {
               headers: {"Content-Type": "application/x-www-form-urlencoded"},
               body: (payload)
             }).then(res=>res.text()).then(data=>{
-              console.log(data);
               setLoading(false)
               nextSection();  
             }).catch(error=> console.log(error))
-          }
+          
         }
+        else if(part === 'Ratings'){
 
-      }
-      else if(part === 'Ratings'){
+          if(responses){
+            const res = roundedResponses(responses)
+            const payload = new URLSearchParams({
+              ParticipantID : id,
+              Language : lang,
+              Trial : trial,
+              HapticCase : hapticCase,
+              DateTime : Date().toString(),
+              Part : "Ratings",
+              MentalRating: res['MD'],
+              PhysicalRating: res['PD'],
+              TemporalRating: res['TD'],
+              PerformanceRating: res['P'],
+              EffortRating: res['E'],
+              FrustrationRating: res['F']
+            }).toString();
 
-        if(responses){
-          const res = roundedResponses(responses)
-          payload = new URLSearchParams({
-            ParticipantID : id,
-            Language : lang,
-            Trial : trial,
-            HapticCase : hapticCase,
-            DateTime : Date().toString(),
-            Part : "Ratings",
-            MentalRating: res['MD'],
-            PhysicalRating: res['PD'],
-            TemporalRating: res['TD'],
-            PerformanceRating: res['P'],
-            EffortRating: res['E'],
-            FrustrationRating: res['F']
-          }).toString();
-
-          fetch(url, {
-            method: "POST",
-            headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: (payload)
-          }).then(res=>res.text()).then(data=>{
-            console.log(data);
-            navigate(`/${lang}/questionnaire-complete`);
-          }).catch(error=> console.log(error)) 
+            fetch(url, {
+              method: "POST",
+              headers: {"Content-Type": "application/x-www-form-urlencoded"},
+              body: (payload)
+            }).then(res=>res.text()).then(data=>{
+              navigate(`/${lang}/questionnaire-complete`);
+            }).catch(error=> console.log(error)) 
+          }        
         }
-        
       }
     }
     else {
@@ -334,7 +294,7 @@ const roundedResponses = (responses : Record<string, number | null>) => {
 
 
       {
-        (section === 0) && 
+        (section === Sections.Instructions) && 
         <div>
           <h4>Instructions</h4>
           <div className="questionnaire-description left">
@@ -347,7 +307,7 @@ const roundedResponses = (responses : Record<string, number | null>) => {
       }
 
       {
-        (section === 1) && 
+        (section === Sections.Definitions) && 
         <div>
           <h4>Definitions</h4>
           <div className="left">
@@ -365,7 +325,7 @@ const roundedResponses = (responses : Record<string, number | null>) => {
       }
 
       {
-        (section === 2) && 
+        (section === Sections.PairwiseIntroduction) && 
         <div>
           <h4>Pairwise Comparaison</h4>
           <div className="left">
@@ -377,14 +337,14 @@ const roundedResponses = (responses : Record<string, number | null>) => {
       }
 
       {
-        (section === 3) && 
+        (section === Sections.PairwiseSelection) && 
         <div className="pairwiseFactors">
           <h4>{pair+1} of {pairs && pairs.length}</h4>
           <div className="page left">
             <p>Tap the factor below that represents the more important contributor to workload for the psecific task that you recently performed</p>
             {Object.values(selectedPairs)}
             {pairs && factors && selectedPairs && pairs.map((p, i) => (
-              (pair == i) && 
+              (pair === i) && 
               <div key={`pair${pair}`} className="pairsParent pairsBottom">
                 <div className="pairOption" onClick={(e) => nextPair(p[0])}>
                   <div className="factorChoice">
@@ -408,7 +368,7 @@ const roundedResponses = (responses : Record<string, number | null>) => {
       }
 
       {
-        (section === 4) && 
+        (section === Sections.RatingsIntroduction) && 
         <div>
           <h4>Rating Scales</h4>
           <div className="left">
@@ -424,28 +384,28 @@ const roundedResponses = (responses : Record<string, number | null>) => {
 
 
       {
-        (section === 5) &&
+        (section === Sections.RatingsSelection) &&
         <div className="ratingScales">
-      <div className="left scales">
+        <div className="left scales">
         <span><b>{factors && factors[currentCategory as TLXFactorKey].name}</b></span> 
         <span>{factors && factors[currentCategory as TLXFactorKey].question}</span> 
-      <TLXSlider
-        label=""
-        value={currentValue}
-        onChange={handleChange}
-      />
-      </div>
+        <TLXSlider
+          label=""
+          value={currentValue}
+          onChange={handleChange}
+        />
+        </div>
          <p className="selected-label">
-          {currentValue !== null ? `Selected: ${Math.round(currentValue)}` : 'Tap or drag to select'}
-        </p> 
-      <button
-        className={`nasatlx-button ${currentValue === null? 'disabled': ''}`}
-        disabled={currentValue === null}
-        onClick={handleNext}
-      >
-        {currentIndex < categories.length - 1 ? 'Next' : 'Submit'}
-      </button>
-    </div>
+            {currentValue !== null ? `Selected: ${Math.round(currentValue)}` : 'Tap or drag to select'}
+          </p> 
+          <button
+            className={`nasatlx-button ${currentValue === null? 'disabled': ''}`}
+            disabled={currentValue === null}
+            onClick={handleNext}
+          >
+            {currentIndex < categories.length - 1 ? 'Next' : 'Submit'}
+          </button>
+        </div>
       }    
   </div>
   );
