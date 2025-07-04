@@ -13,7 +13,7 @@ function Home() {
   const [hapticCase, setHapticCase] =  useState('h');
   const [id, setId] =  useState('0'); 
   const [trial, setTrial] =  useState('0');
-  const [usePairwise, setUsePairwise] =  useState(false);
+  const [usePairwise, setUsePairwise] =  useLocalStorage('usePairwise', "true"); 
 
 
   const validateInput = () => {
@@ -43,7 +43,7 @@ function Home() {
 
    const startNASATLXQuestionnaire = () => {
     if(validateInput())
-      navigate(`/${lang}/nasa-tlx/${usePairwise}/${hapticCase}/${id}/${trial}`);
+      navigate(`/${lang}/nasa-tlx/${hapticCase}/${id}/${trial}`);
     }    
 
   return (
@@ -83,7 +83,7 @@ function Home() {
 
         <div className="inputData">
           <label>Use Pairwise Comparisons :</label>
-          <input type="checkbox" checked={usePairwise} required onChange={(e) => setUsePairwise(e.target.checked)} />
+          <input type="checkbox" checked={usePairwise==="true"} required onChange={(e) => setUsePairwise(e.target.checked.toString())} />
         </div>
 
         <br/>

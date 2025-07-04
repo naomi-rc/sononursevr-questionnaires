@@ -1,9 +1,10 @@
-import React, { useEffect, useState,useRef  } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import NASATLX_EN from "../Questions/nasatlx/en"
 import NASATLX_FR from "../Questions/nasatlx/fr";
 import { TLXSlider } from './TLXSlider';
+import { useLocalStorage } from "../useLocalStorage";
 
 
 enum Sections {
@@ -43,7 +44,8 @@ function NASATLX() {
 
   let navigate = useNavigate();
 
-  const {lang, id, trial, hapticCase, usePairwise } = useParams();
+  const {lang, id, trial, hapticCase } = useParams();
+  const [usePairwise, setUsePairwise] =  useLocalStorage('usePairwise', "true"); 
   const [loading, setLoading] = React.useState(false);
   const [info, setInfo] = React.useState<any>(); 
   const [factors, setFactors] = useState<TLXFactors>();

@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path="*" element={<Home/>} />
         <Route path="/:lang/hxi/:hapticCase/:id/:trial" element={<HXI/>} />
-        <Route path="/:lang/nasa-tlx/:usePairwise/:hapticCase/:id/:trial" element={<NASATLX/>} />
+        <Route path="/:lang/nasa-tlx/:hapticCase/:id/:trial" element={<NASATLX/>} />
         <Route path="/:lang/questionnaire-complete" element={<QuestionnaireComplete/>} />
       </Routes>
       
