@@ -1,4 +1,3 @@
-import React from 'react';
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -14,27 +13,8 @@ function Home() {
   const [hapticCase, setHapticCase] =  useState('h');
   const [id, setId] =  useState('0'); 
   const [trial, setTrial] =  useState('0');
+  const [usePairwise, setUsePairwise] =  useState(false);
 
-
-  const handleStudyNameInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-    setStudyName(event.target.value);
-  };
-
-  const handleLanguageInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-    setLanguage(event.target.value);
-  };
-
-  const handleHapticCaseInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-    setHapticCase(event.target.value);
-  };
-
-  const handleIdInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-    setId(event.target.value);
-  };
-
-  const handleTrialInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-    setTrial(event.target.value);
-  };
 
   const validateInput = () => {
     console.log(id);
@@ -63,7 +43,7 @@ function Home() {
 
    const startNASATLXQuestionnaire = () => {
     if(validateInput())
-      navigate(`/${lang}/nasa-tlx/${hapticCase}/${id}/${trial}`);
+      navigate(`/${lang}/nasa-tlx/${usePairwise}/${hapticCase}/${id}/${trial}`);
     }    
 
   return (
@@ -72,12 +52,12 @@ function Home() {
 
         <div className="inputData">
           <label>Study Name: </label>
-          <input value={studyName} required onChange={handleStudyNameInputChange} placeholder="Enter study name" />
+          <input value={studyName} required onChange={(e) => setStudyName(e.target.value)} placeholder="Enter study name" />
         </div>
  
         <div className="inputData">
           <label>Language: </label>
-          <select value={lang} required onChange={handleLanguageInputChange} >
+          <select value={lang} required onChange={(e) => setLanguage(e.target.value)} >
             <option value="fr">FR</option>
             <option value="en">EN</option>
           </select>
@@ -85,7 +65,7 @@ function Home() {
 
         <div className="inputData">
           <label>Haptic Case: </label>
-          <select value={hapticCase} required onChange={handleHapticCaseInputChange} >
+          <select value={hapticCase} required onChange={(e) => setHapticCase(e.target.value)} >
             <option value="h">H</option>
             <option value="nh">NH</option>
           </select>
@@ -93,12 +73,17 @@ function Home() {
         
         <div className="inputData">
           <label>ID: </label>
-          <input type="number" value={id} required onChange={handleIdInputChange} placeholder="Enter ID" />
+          <input type="number" value={id} required onChange={(e) => setId(e.target.value)} placeholder="Enter ID" />
         </div>
 
         <div className="inputData">
           <label>Trial #: </label>
-          <input type="number" value={trial} required onChange={handleTrialInputChange} placeholder="Enter trial #" />
+          <input type="number" value={trial} required onChange={(e) => setTrial(e.target.value)} placeholder="Enter trial #" />
+        </div>
+
+        <div className="inputData">
+          <label>Use Pairwise Comparisons :</label>
+          <input type="checkbox" checked={usePairwise} required onChange={(e) => setUsePairwise(e.target.checked)} />
         </div>
 
         <br/>
