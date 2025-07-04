@@ -219,8 +219,8 @@ const [currentIndex, setCurrentIndex] = useState(0);
     }));
   };
 
-const calcualteTotalWeight = (responses : Record<string, number>) => {
-   return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, Math.round(value).toString()]));
+const calcualteTotalWeight = (responses : Record<string, number | null>) => {
+   return Object.values(responses).reduce((sum : number, val) => sum + (val?? 0), 0);
 }
 
 const stringResponses = (responses : Record<string, number | null>) => {
@@ -245,6 +245,7 @@ const roundedResponses = (responses : Record<string, number | null>) => {
 
           if(true) {
             const res = stringResponses(responses)
+            const totalWeight = calcualteTotalWeight(responses)
             payload = new URLSearchParams({
               ParticipantID : id,
               Language : lang,
@@ -258,11 +259,10 @@ const roundedResponses = (responses : Record<string, number | null>) => {
               PerformanceWeight : res['P'],
               EffortWeight : res['E'],
               FrustrationWeight: res['F'],
-              WeightCheck : totalWeightCount.toString()
+              WeightCheck : totalWeight.toString()
             }).toString();
-setLoading(false)
-nextSection();  
-            /* fetch(url, {
+
+             fetch(url, {
               method: "POST",
               headers: {"Content-Type": "application/x-www-form-urlencoded"},
               body: (payload)
@@ -270,7 +270,7 @@ nextSection();
               console.log(data);
               setLoading(false)
               nextSection();  
-            }).catch(error=> console.log(error)) */
+            }).catch(error=> console.log(error))
           }
         }
 
@@ -294,14 +294,14 @@ nextSection();
             FrustrationRating: res['F']
           }).toString();
 
-          /* fetch(url, {
+          fetch(url, {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
             body: (payload)
           }).then(res=>res.text()).then(data=>{
             console.log(data);
             navigate(`/${lang}/questionnaire-complete`);
-          }).catch(error=> console.log(error)) */
+          }).catch(error=> console.log(error)) 
         }
         
       }
