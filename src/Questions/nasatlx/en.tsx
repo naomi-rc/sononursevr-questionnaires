@@ -28,31 +28,6 @@ const NASATLX_EN = {
     "ratingsSummary" : "Rating Scales Summary",
 
     "finish" : "Finish",
-  
-/* 
-    "low_high" : "(low/high)",
-    "good_poor" : "(good/poor)",
-
-    "mental" : "Mental Demand",
-    "mental_question" : "How much mental and perceptual actiivty did you spend for the task?",
-    "mental_definition" : "How much mental and perceptual activity was required (for example, thinking, deciding, calculating, remembering, looking, searching, etc)? Was the task easy or demanding, simple or complex, forgiving or exacting?",
-
-    "physical" : "Physical Demand",
-    "physical_definition" : "How much physical activity was required (for example, pushing, pulling, turning, controlling, activating, etc.)? Was the task easy or demanding, slow or brisk, slack or strenuous, restful or laborious?",
-
-    "temporal" : "Temporal Demand",
-    "temporal_definition" : "How much time pressure did you feel due to the rate or pace at which the tasks or task elements occurred? Was the pace slow and leisurely or rapid and frantic?",
-
-    "performance" : "Mental Demand",
-    "performance_definition" : "How successful do you think you were in accomplishing the goals of the task set by the experimenter (or yourself)? How satisfied were you with your performance in accomplishing these goals?",
-
-    "effort" : "Effort",
-    "effort_definition" : "How hard did you have to work (mentally and physically) to accomplish your level of performance?",
-
-    "frustration" : "Frustration Level",
-    "frustration_definition" : "How insecure, discouraged, irritated, stressed, and annoyed versus secure, gratified, content, relaxed, and complacent did you feel during the task?", */
-
-
   }, 
   "factors" : {
     "MD" : 

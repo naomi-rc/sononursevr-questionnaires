@@ -77,6 +77,7 @@ function NASATLX() {
   useEffect(() => {
     if(lang==='fr'){
       setInfo(NASATLX_FR.info);
+      setFactors(NASATLX_FR.factors);
     }
     else{
       setInfo(NASATLX_EN.info);
@@ -191,7 +192,6 @@ function NASATLX() {
     } 
     else {
       nextSection();
-      //submitResponses('Ratings', rawRatings);
     }
   };
 
@@ -357,7 +357,6 @@ function NASATLX() {
           <h4>{pair+1} of {pairs && pairs.length}</h4>
           <div className="page left">
             <p>{info.tapFactorPrompt}</p>
-            {Object.values(selectedPairs)}
             {pairs && factors && selectedPairs && pairs.map((p, i) => (
               (pair === i) && 
               <div key={`pair${pair}`} className="pairsParent pairsBottom">
