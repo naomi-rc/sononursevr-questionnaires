@@ -1,6 +1,5 @@
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { useLocalStorage } from "../useLocalStorage";
 
 
@@ -9,10 +8,10 @@ function Home() {
   let navigate = useNavigate();
 
   const [studyName, setStudyName] =  useLocalStorage('studyName', ''); 
-  const [lang, setLanguage] =  useState('en');
-  const [hapticCase, setHapticCase] =  useState('h');
-  const [id, setId] =  useState('0'); 
-  const [trial, setTrial] =  useState('0');
+  const [lang, setLanguage] =  useLocalStorage('language', 'en');
+  const [hapticCase, setHapticCase] =  useLocalStorage('hapticCase', 'h');
+  const [id, setId] =  useLocalStorage('ID', '0'); 
+  const [trial, setTrial] =  useLocalStorage('trial', '0');
   const [usePairwise, setUsePairwise] =  useLocalStorage('usePairwise', "true"); 
 
 

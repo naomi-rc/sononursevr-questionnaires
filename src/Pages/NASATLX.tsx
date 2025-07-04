@@ -13,7 +13,8 @@ enum Sections {
   PairwiseIntroduction,
   PairwiseSelection,
   RatingsIntroduction,
-  RatingsSelection
+  RatingsSelection,
+  RatingsSummary,
 }
 
 const categories = [
@@ -25,7 +26,7 @@ const categories = [
   'F',
 ];
 
-interface TLXFactor {
+export interface TLXFactor {
   name: string;
   definition: string;
   question: string;
@@ -33,6 +34,7 @@ interface TLXFactor {
   scale: string;
   upper: string;
   lower: string;
+  note: string;
 }
 
 type TLXFactorKey = "MD" | "PD" | "TD" | "P" | "E" | "F";
@@ -61,6 +63,7 @@ function NASATLX() {
   const [factor, setFactor] = useState<number>(0);
   const [pairs, setPairs] = useState<string[][]>();
   const [selectedPairs, setSelectedPairs] = React.useState<{[key: number] : string}>({}); 
+  const [adjustingRating, setAdjustRating] = React.useState<boolean>(false); 
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [rawRatings, setRawRatings] = useState<Record<string, number | null>>(
@@ -95,6 +98,26 @@ function NASATLX() {
     setSelectedPairs(prevDictionary => ({ ...prevDictionary, [key] : value }));    
   }
 
+  
+  const nextPair = (factor: string) => {
+    if(pairs === undefined) return;
+
+    updateSelectedPairs(pair, factor)
+    const updated = { ...selectedPairs, [pair]: factor };
+    if(pair + 1 >= pairs.length){
+      setTimeout(() => { 
+        const weights = calculateWeights(updated)     
+        submitResponses('Weighting', weights);      
+      }, 500); 
+            
+    }
+    else{
+      setTimeout(() => {
+        setPair(pair+1);
+      }, 500);
+    }
+  }
+
   const previousSection = () => {
     if(section === Sections.PairwiseSelection && (pair > 0)){
       setPair(pair-1);
@@ -123,23 +146,11 @@ function NASATLX() {
     }
   }
 
-  const nextPair = (factor: string) => {
-    if(pairs === undefined) return;
 
-    updateSelectedPairs(pair, factor)
-    const updated = { ...selectedPairs, [pair]: factor };
-    if(pair + 1 >= pairs.length){
-      setTimeout(() => { 
-        const weights = calculateWeights(updated)     
-        submitResponses('Weighting', weights);      
-      }, 500); 
-            
-    }
-    else{
-      setTimeout(() => {
-        setPair(pair+1);
-      }, 500);
-    }
+  const adjustRatingResponses = (index : number) => {
+    setAdjustRating(true);
+    setCurrentIndex(index);
+    setSection(Sections.RatingsSelection)
   }
 
 
@@ -171,12 +182,16 @@ function NASATLX() {
 
   const handleNext = () => {
     if (currentValue === null) return;
-
-    if (currentIndex < categories.length - 1) {
+    
+    if(adjustingRating){
+      setSection(Sections.RatingsSummary)
+    }
+    else if (currentIndex < categories.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } 
     else {
-      submitResponses('Ratings', rawRatings);
+      nextSection();
+      //submitResponses('Ratings', rawRatings);
     }
   };
 
@@ -329,8 +344,8 @@ function NASATLX() {
         <div>
           <h4>Pairwise Comparaison</h4>
           <div className="left">
-              <p>You will now be shown...</p>
-            
+              <p>{info.pairwiseInstructions}</p>            
+              <p>{info.pairwiseInstructionsContinued}</p>            
           </div>
           <button type="button" className="bottom nasatlx-button" onClick={(e) => nextSection()}>{info && info.next}</button>
         </div>
@@ -341,7 +356,7 @@ function NASATLX() {
         <div className="pairwiseFactors">
           <h4>{pair+1} of {pairs && pairs.length}</h4>
           <div className="page left">
-            <p>Tap the factor below that represents the more important contributor to workload for the psecific task that you recently performed</p>
+            <p>{info.tapFactorPrompt}</p>
             {Object.values(selectedPairs)}
             {pairs && factors && selectedPairs && pairs.map((p, i) => (
               (pair === i) && 
@@ -372,11 +387,9 @@ function NASATLX() {
         <div>
           <h4>Rating Scales</h4>
           <div className="left">
-            <p>{info.scales}</p>
-            <p>{info.evaluate}</p>
-            <p>{info.consider}</p>
-           <p>{selectedPairs && Object.keys(selectedPairs).length}</p>
-           <p>{selectedPairs && selectedPairs[0]}</p>
+            <p>{info.ratingScales1}</p>
+            <p>{info.ratingScales2}</p>
+            <p>{info.ratingScales3}</p>
           </div>
           <button type="button" className="bottom nasatlx-button" onClick={(e) => nextSection()}>{info && info.next}</button>
         </div>
@@ -386,27 +399,70 @@ function NASATLX() {
       {
         (section === Sections.RatingsSelection) &&
         <div className="ratingScales">
-        <div className="left scales">
-        <span><b>{factors && factors[currentCategory as TLXFactorKey].name}</b></span> 
-        <span>{factors && factors[currentCategory as TLXFactorKey].question}</span> 
-        <TLXSlider
-          label=""
-          value={currentValue}
-          onChange={handleChange}
-        />
-        </div>
-         <p className="selected-label">
+          <div className="left">
+            <p>{info.tapScalePrompt}</p>
+            <div className="scales">
+              
+              <span><b>{factors && factors[currentCategory as TLXFactorKey].name}</b></span> 
+              <span>{factors && factors[currentCategory as TLXFactorKey].question}</span> 
+              <TLXSlider
+                label=""
+                value={currentValue}
+                factor={factors && factors[currentCategory as TLXFactorKey]}
+                modifiable={true}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <p className="selected-label">
+            <i>{factors && factors[currentCategory as TLXFactorKey].note}</i>
+          </p>  
+          {/* <p className="selected-label">
             {currentValue !== null ? `Selected: ${Math.round(currentValue)}` : 'Tap or drag to select'}
-          </p> 
+          </p>  */}
           <button
             className={`nasatlx-button ${currentValue === null? 'disabled': ''}`}
             disabled={currentValue === null}
             onClick={handleNext}
           >
-            {currentIndex < categories.length - 1 ? 'Next' : 'Submit'}
+            {info.next}
           </button>
         </div>
-      }    
+      }  
+
+
+      {
+        (section === Sections.RatingsSummary) &&
+        <div className="ratingScales">
+          <div className="left">
+            <p>{info.finished1}</p>
+            <p>{info.finished2}</p>
+            <br/>
+            <h3>{info.ratingsSummary}</h3>
+            <div className="scales">
+              {categories.map((category, i) => (
+                <div key={`factor${category}`} onClick={(e) => {adjustRatingResponses(i)}}>
+                  <span><b>{factors && factors[category as TLXFactorKey].name}</b></span> 
+                  <TLXSlider
+                    label=""
+                    value={rawRatings[category]}
+                    factor={factors && factors[category as TLXFactorKey]}
+                    modifiable={false}
+                    onChange={handleChange}
+                  />
+                </div>))}
+            </div>
+          </div>
+          
+          <button
+            className={`nasatlx-button ${currentValue === null? 'disabled': ''}`}
+            disabled={currentValue === null}
+            onClick={(e) => {submitResponses('Ratings', rawRatings);}}
+          >
+            {info.finish}
+          </button>
+        </div>
+      }  
   </div>
   );
 }
