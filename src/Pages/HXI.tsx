@@ -73,16 +73,17 @@ const HXI = () => {
       for (let i = 0; i < factors.length; i++) {
         const factor = factors[i];
         let factorScore = 0;
-         for (let j = 0; j < factor.length; j++) {
-            const item = factor[j];
-            factorScore += parseInt(statementAnswers[item])
-         }
-         factorScore = factorScore / 4;
-         if(i === 3) {
+        for (let j = 0; j < factor.length; j++) {
+          const item = factor[j];
+          factorScore += parseInt(statementAnswers[item])
+        }
+        factorScore = factorScore / 4;
+        scores[i] = factorScore.toString();
+        if(i === 3) {
           // Reverse the score for Discord
           factorScore = (8 - factorScore);
-         }
-         scores[i] = factorScore.toString();
+        }
+         
          generalScore += factorScore;
       }
     }  
