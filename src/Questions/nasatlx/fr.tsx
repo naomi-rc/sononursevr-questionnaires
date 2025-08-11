@@ -10,21 +10,21 @@ const NASATLX_FR = {
     "thankyou" : "Merci pour votre participation !",
     "sendAnotherResponse" : "Envoyer une autre réponse",
 
-    "instructions" : "L’évaluation que vous êtes sur le point de réaliser est une technique développée par la NASA pour évaluer l’importance relative de six facteurs déterminant la charge de travail que vous avez ressentie en accomplissant une tâche récemment effectuée.",
-    "instructionsContinued" : "Ces six facteurs sont définis à la page suivante. Lisez-les attentivement pour bien comprendre ce que signifie chaque facteur. Si vous avez des questions, veuillez les poser à votre administrateur.",
+    "instructions" : "L'évaluation que vous êtes sur le point d'effectuer est une technique qui a été développée par la NASA pour évaluer l'importance relative de six facteurs dans la détermination de la charge de travail que vous avez ressentie lors de l'exécution d'une tâche que vous avez récemment effectuée.",
+    "instructionsContinued" : "Les six facteurs sont définis à la page suivante. Lisez-les pour vous assurer que vous comprenez la signification de chaque facteur. Si vous avez des questions, n'hésitez pas à les poser à votre administrateur.",
 
-    "pairwiseInstructions" : "Une série de paires de facteurs d’évaluation vous sera maintenant présentée ; chaque paire apparaîtra sur un écran distinct.",
-    "pairwiseInstructionsContinued" : "Pour chaque paire, choisissez le facteur qui a le plus contribué à votre perception de la charge de travail pendant la tâche que vous avez récemment réalisée.",
-    "tapFactorPrompt" : "Touchez ci-dessous le facteur qui représente le contributeur le plus important à la charge de travail pour la tâche spécifique que vous avez récemment effectuée.",
+    "pairwiseInstructions" : "Une série de paires de facteurs de l'échelle d'évaluation va vous être présentée : chaque paire apparaîtra sur un écran séparé.",
+    "pairwiseInstructionsContinued" : "Pour chaque paire, choisissez le facteur qui a été le plus important pour votre expérience de la charge de travail dans la tâche que vous avez récemment effectuée.",
+    "tapFactorPrompt" : "Choisissez ci-dessous le facteur qui contribue le plus à la charge de travail pour la tâche spécifique que vous avez récemment effectuée.",
 
-    "ratingScales1" : "Une série d’échelles d’évaluation vous sera maintenant présentée.",
-    "ratingScales2" : "Pour chacune des six échelles, évaluez la tâche que vous avez récemment réalisée en touchant l’emplacement sur l’échelle qui correspond à votre expérience. Chaque ligne comporte deux descripteurs aux extrémités qui définissent l’échelle.",
-    "ratingScales3" : "Réfléchissez soigneusement à vos réponses en distinguant les différentes conditions de la tâche, et considérez chaque échelle séparément.",
+    "ratingScales1" : "Une série d'échelles d'évaluation va vous être présentée.",
+    "ratingScales2" : "Pour chacune des six échelles, évaluez la tâche que vous avez récemment effectuée en appuyant sur l'emplacement de l'échelle qui correspond à votre expérience. Chaque ligne comporte deux descripteurs d'extrémité qui décrivent l'échelle.",
+    "ratingScales3" : "Examinez soigneusement vos réponses en distinguant les différentes conditions de la tâche, et considérez chaque échelle individuellement.",
 
-    "tapScalePrompt" : "Touchez votre réponse sur l’échelle ci-dessous.",
+    "tapScalePrompt" : "Choisissez votre réponse sur l’échelle ci-dessous.",
 
-    "finished1" : "Vous avez terminé l’évaluation. Un résumé de vos réponses est présenté ci-dessous pour révision. Vous pouvez toucher n’importe quelle réponse pour revenir à la question correspondante et modifier votre réponse.",
-    "finished2" : "Si vous êtes prêt à soumettre vos réponses, touchez Terminer.",
+    "finished1" : "Vous avez terminé l’évaluation. Un résumé de vos réponses est présenté ci-dessous pour révision. Vous pouvez choisir n’importe quelle réponse pour revenir à la question correspondante et modifier votre réponse.",
+    "finished2" : "Si vous êtes prêt à soumettre vos réponses, choisissez  Terminer.",
     "ratingsSummary" : "Résumé des échelles d’évaluation",
 
     "finish" : "Terminer",
@@ -32,9 +32,9 @@ const NASATLX_FR = {
   "factors" : {
     "MD" : 
     {
-      "name": "Charge mentale", 
-      "definition" : "Quelle quantité d’activité mentale et perceptive a été nécessaire (par exemple, penser, décider, calculer, se souvenir, observer, chercher, etc.) ? La tâche était-elle facile ou exigeante, simple ou complexe, tolérante ou rigoureuse ?", 
-      "question" : "Quelle quantité d’activité mentale et perceptive avez-vous consacrée à cette tâche ?",
+      "name": "Exigence mentale", 
+      "definition" : "Quelle activité mentale et perceptive était requise (par exemple, penser, décider, calculer, se souvenir, regarder, chercher, etc.) La tâche était-elle facile ou exigeante, simple ou complexe, indulgente ou exigeante ?", 
+      "question" : "Quel degré d'activité mentale était exigé pour réaliser la tâche ?",
       "reference" : "Cela fait référence à la quantité d’activité mentale et perceptive requise pour accomplir la tâche.",
       "scale" : "(faible/élevée)",
       "upper" : "Élevée",
@@ -44,9 +44,9 @@ const NASATLX_FR = {
 
     "PD" : 
     {
-      "name" : "Charge physique", 
-      "definition" : "Quelle quantité d’activité physique a été nécessaire (par exemple, pousser, tirer, tourner, contrôler, activer, etc.) ? La tâche était-elle facile ou exigeante, lente ou rapide, légère ou intense, reposante ou fatigante ?", 
-      "question" : "Quelle quantité d’activité physique avez-vous consacrée à cette tâche ?",
+      "name" : "Exigence physique", 
+      "definition" : "Quelle quantité d’activité physique était requise (par exemple, pousser, tirer, tourner, contrôler, activer, etc.) La tâche était-elle facile ou exigeante, lente ou rapide, détendue ou exténuante, reposante ou laborieuse ?", 
+      "question" : "Quel degré d'activité physique était exigé pour réaliser la tâche ?",
       "reference" : "Cela fait référence à la quantité d’activité physique requise pour accomplir la tâche.",
       "scale" : "(faible/élevée)",
       "upper" : "Élevée",
@@ -56,10 +56,10 @@ const NASATLX_FR = {
 
     "TD" : 
     {
-      "name" : "Pression temporelle", 
-      "definition" : "À quel point avez-vous ressenti une pression temporelle en raison du rythme ou de la cadence à laquelle les tâches ou les éléments de la tâche se sont déroulés ? Le rythme était-il lent et détendu ou rapide et frénétique ?", 
-      "question" : "À quel point avez-vous ressenti une pression temporelle pour accomplir cette tâche ?",
-      "reference" : "Cela fait référence à la pression temporelle ressentie en raison du rythme ou de la cadence des tâches ou de leurs éléments.",
+      "name" : "Exigence temporelle", 
+      "definition" : "Quelle pression temporelle avez-vous ressentie en raison de la vitesse ou du rythme auquel les tâches ou les éléments de la tâche se sont déroulés ? Le rythme était-il lent et tranquille ou rapide et effréné ?", 
+      "question" : "Quelle pression temporelle avez-vous ressentie pour réaliser la tâche?",
+      "reference" : "Cela fait référence à la pression temporelle ressentie en raison de la vitesse ou du rythme auquel les tâches ou les éléments de la tâche se sont déroulés (rythme lent et tranquille ou rapide et effréné).",
       "scale" : "(faible/élevée)",
       "upper" : "Élevée",
       "lower" : "Faible",
@@ -69,9 +69,9 @@ const NASATLX_FR = {
     "P" : 
     {
       "name" : "Performance", 
-      "definition" : "Dans quelle mesure pensez-vous avoir réussi à atteindre les objectifs de la tâche fixés par l’expérimentateur (ou par vous-même) ? Dans quelle mesure étiez-vous satisfait de votre performance dans l’accomplissement de ces objectifs ?", 
-      "question" : "Dans quelle mesure pensez-vous avoir réussi à atteindre les objectifs de la tâche ?",
-      "reference" : "Cela fait référence à la réussite perçue dans l’atteinte des objectifs fixés et à la satisfaction ressentie quant à la performance.",
+      "definition" : "Dans quelle mesure pensez-vous avoir réussi à atteindre les objectifs de la tâche fixés par l’expérimentateur (ou vous-même) ? Dans quelle mesure avez-vous été satisfait de votre performance dans l’accomplissement de ces objectifs ? ", 
+      "question" : "Avec quel succès pensez-vous avoir réalisé la tâche ?",
+      "reference" : "Cela fait référence à la réussite perçue dans l’atteinte des objectifs fixés par l’expérimentateur (ou vous-même) et à la satisfaction ressentie quant à la performance dans l’accomplissement de ces objectifs.",
       "scale" : "(bonne/mauvaise)",
       "upper" : "Mauvaise",
       "lower" : "Bonne",
@@ -81,8 +81,8 @@ const NASATLX_FR = {
     "E" : 
     {
       "name" : "Effort", 
-      "definition" : "À quel point avez-vous dû fournir des efforts (mentaux et physiques) pour atteindre votre niveau de performance ?", 
-      "question" : "À quel point avez-vous dû fournir des efforts pour atteindre votre niveau de performance ?",
+      "definition" : "Dans quelle mesure avez-vous dû travailler (mentalement et physiquement) pour atteindre votre niveau de performance ?", 
+      "question" : "Quel effort deviez-vous fournir pour accomplir la tâche ?",
       "reference" : "Cela fait référence à l’intensité des efforts (mentaux et physiques) nécessaires pour atteindre votre niveau de performance.",
       "scale" : "(faible/élevé)",
       "upper" : "Élevé",
@@ -92,10 +92,10 @@ const NASATLX_FR = {
 
     "F" : 
     {
-      "name" : "Frustration", 
-      "definition" : "Dans quelle mesure vous êtes-vous senti peu sûr de vous, découragé, irrité, stressé et agacé par opposition à sûr de vous, satisfait, détendu, relaxé et complaisant durant la tâche ?", 
-      "question" : "Dans quelle mesure vous êtes-vous senti peu sûr de vous, découragé, irrité, stressé et agacé durant cette tâche ?",
-      "reference" : "Cela fait référence à votre ressenti durant la tâche, entre insécurité et frustration d’un côté, et confiance et détente de l’autre.",
+      "name" : "Niveau de frustration", 
+      "definition" : "Dans quelle mesure avez-vous ressenti de l’insécurité, du découragement, de l’irritation, du stress et de l’agacement par rapport à de la sécurité, de la satisfaction, du contentement, de la détente et de la complaisance pendant la tâche ?", 
+      "question" : "Avez-vous ressenti, durant la tâche, de l'insécurité, du découragement, de l'irritation, du stress ou de l'agacement?",
+      "reference" : "Cela fait référence à votre ressenti de l’insécurité, du découragement, de l’irritation, du stress et de l’agacement par rapport à de la sécurité, de la satisfaction, du contentement, de la détente et de la complaisance pendant la tâche.",
       "scale" : "(faible/élevée)",
       "upper" : "Élevée",
       "lower" : "Faible",
