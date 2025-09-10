@@ -4,6 +4,7 @@ import './App.css';
 import Home from './Pages/Home';
 import HXI from './Pages/HXI';
 import NASATLX from './Pages/NASATLX';
+import Presence from './Pages/Presence';
 import QuestionnaireComplete from './Pages/QuestionnaireComplete';
 
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="*" element={<Home/>} />
         <Route path="/:lang/hxi/:hapticCase/:id/:trial" element={<HXI/>} />
         <Route path="/:lang/nasa-tlx/:hapticCase/:id/:trial" element={<NASATLX/>} />
+        <Route path="/:lang/presence/:hapticCase/:id/:trial" element={<Presence/>} />
         <Route path="/:lang/questionnaire-complete" element={<QuestionnaireComplete/>} />
       </Routes>
       

@@ -390,6 +390,85 @@ body {
   }
 }
 
+
+
+.Presence {
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-bottom: 2em;
+  }
+  th {
+    font-weight: normal;
+    font-size: small;
+  }
+  tr {
+    height: 2em;
+  }
+  .question-entry {
+    border-bottom: 0.1em solid black; 
+  }
+  .question-scale {
+    border-bottom: 0.1em solid black;
+  }
+  .questionnaire-description {
+    text-align: left;
+    line-height: 2em;
+  }
+  .question {
+    text-align: left;
+    line-height: 1.5em;
+  }
+  input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #666;
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+    margin: 0;
+  }
+  input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    background-color: #333;
+  }
+  
+  .line {
+    width: 800%; /* set the desired length of the line */
+    height: 1px; /* set the height of the line */
+    background-color: black; /* set the color of the line */
+    margin:0 auto;
+  }
+  .button {
+    width: 30%;
+    height: 2em;
+    font-size:large;
+    background-color: lightblue;
+    border-radius: 3px;
+  }
+
+  .button:hover{
+      background-color: rgb(157, 196, 210);
+  }
+  .button:active {
+      background-color: rgb(169, 220, 238);
+  }
+
+  
+
+
+
+}
+
+
 .questionnaireComplete {
   font-size: x-large;
 

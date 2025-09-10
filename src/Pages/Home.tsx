@@ -38,12 +38,17 @@ function Home() {
   const startHXIQuestionnaire = () => {    
     if(validateInput())
       navigate(`/${lang}/hxi/${hapticCase}/${id}/${trial}`);
-    }   
+  }   
 
-   const startNASATLXQuestionnaire = () => {
-    if(validateInput())
-      navigate(`/${lang}/nasa-tlx/${hapticCase}/${id}/${trial}`);
-    }    
+  const startNASATLXQuestionnaire = () => {
+  if(validateInput())
+    navigate(`/${lang}/nasa-tlx/${hapticCase}/${id}/${trial}`);
+  }    
+
+  const startPresenceQuestionnaire = () => {
+  if(validateInput())
+    navigate(`/${lang}/presence/${hapticCase}/${id}/${trial}`);
+  } 
 
   return (
       <div className="home App">
@@ -87,7 +92,8 @@ function Home() {
 
         <br/>
         <button onClick={startHXIQuestionnaire}>Start HXI</button> <br/>
-        <button onClick={startNASATLXQuestionnaire}>Start NASA-TLX</button>
+        <button onClick={startNASATLXQuestionnaire}>Start NASA-TLX</button> <br/>
+        <button onClick={startPresenceQuestionnaire}>Start Presence Questionnaire</button>
       </header>
     </div>
     
