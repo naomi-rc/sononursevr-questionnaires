@@ -3,7 +3,7 @@ const Presence_FR = {
     "title" : "QUESTIONNAIRE SUR L'ÉTAT DE PRÉSENCE",
     "participantid" : "ID du.de la Participant.e : ",
     "back" : "< Retour",
-    "instructions" : "Décrivez votre expérience dans l'environnement en marquant d'un \"X\" la case appropriée de l'échelle en 7 points, et ce en accord avec le contenu de la question et les étiquettes descriptives. Veuillez prendre en compte l'échelle en entier lorsque vous inscrivez vos réponses, surtout lorsque des niveaux intermédiaires sont en jeu. Répondez aux questions indépendamment les unes des autres et dans l'ordre dans lequel ils apparaissent. Ne sautez pas de questions et ne retournez pas à une question précédente afin de modifier votre réponse.",
+    "instructions" : "Décrivez votre expérience dans l'environnement en sélectionnant une case de l'échelle en 7 points, et ce en accord avec le contenu de la question et les étiquettes descriptives. Veuillez prendre en compte l'échelle en entier lorsque vous inscrivez vos réponses, surtout lorsque des niveaux intermédiaires sont en jeu. Répondez aux questions indépendamment les unes des autres et dans l'ordre dans lequel ils apparaissent. Ne sautez pas de questions et ne retournez pas à une question précédente afin de modifier votre réponse.",
     "preprompt" : "EN FONCTION DE L'ENVIRONNEMENT DANS LEQUEL VOUS ÉTIEZ",
 
     "understood" : "J'ai compris",

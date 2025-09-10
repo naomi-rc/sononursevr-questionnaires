@@ -3,7 +3,7 @@ const Presence_EN = {
     "title" : "PRESENCE QUESTIONNAIRE",
     "participantid" : "Participant ID : ",
     "back" : "< Back",
-    "instructions" : "Characterize your experience in the environment, by marking an \"X\" in the appropriate box of the 7-point scale, in accordance with the question content and descriptive labels. Please consider the entire scale when making your responses, as the intermediate levels may apply.  Answer the questions independently in the order that they appear.  Do not skip questions or return to a previous question to change your answer. ",
+    "instructions" : "Characterize your experience in the environment, by selecting a box on the 7-point scale, in accordance with the question content and descriptive labels. Please consider the entire scale when making your responses, as the intermediate levels may apply.  Answer the questions independently in the order that they appear.  Do not skip questions or return to a previous question to change your answer. ",
     "preprompt" : "WITH REGARD TO THE EXPERIENCED ENVIRONMENT",
 
     "understood" : "I understand",
