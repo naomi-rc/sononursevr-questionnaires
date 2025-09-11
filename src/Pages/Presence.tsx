@@ -211,9 +211,9 @@ const Presence = () => {
                         <tr>
                           {[...Array(8)].map((_, s) => (
                             <td key={s}>
-                              {(s==1) && q.lower}
-                              {(s==4) && q.middle}
-                              {(s==7) && q.upper}
+                              {(s===1) && q.lower}
+                              {(s===4) && q.middle}
+                              {(s===7) && q.upper}
                             </td>
                           ))}
                         </tr>
