@@ -52,7 +52,7 @@ function NASATLX() {
 
   let navigate = useNavigate();
 
-  const {lang, id, trial, hapticCase } = useParams();
+  const {lang, id, trial, hapticCase, allowSummary} = useParams();
   const [usePairwise] =  useLocalStorage('usePairwise', "true"); 
   const [studyName] =  useLocalStorage('studyName', ''); 
   const [loading, setLoading] = React.useState(false);
@@ -422,13 +422,26 @@ function NASATLX() {
           {/* <p className="selected-label">
             {currentValue !== null ? `Selected: ${Math.round(currentValue)}` : 'Tap or drag to select'}
           </p>  */}
-          <button
+          {
+              !allowSummary && currentIndex === categories.length - 1 &&    
+              <button
+                className={`nasatlx-button ${currentValue === null? 'disabled': ''}`}
+                disabled={currentValue === null}
+                onClick={(e) => {submitResponses('Ratings', rawRatings);}}
+              >
+                {info.finish}
+              </button>
+          }
+          {
+            ((currentIndex < categories.length - 1) || (allowSummary && currentIndex === categories.length - 1)) &&
+            <button
             className={`nasatlx-button ${currentValue === null? 'disabled': ''}`}
             disabled={currentValue === null}
             onClick={handleNext}
-          >
-            {info.next}
-          </button>
+            >
+              {info.next}
+            </button>
+          }
         </div>
       }  
 

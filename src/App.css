@@ -405,6 +405,17 @@ body {
   tr {
     height: 2em;
   }
+
+ /*  .presenceLabelAlign1 {
+    text-align: left;
+  }
+  .presenceLabelAlign4{
+    text-align: center;
+  }
+  .presenceLabelAlign7{
+    text-align: right;
+  } */
+
   .question-entry {
     border-bottom: 0.1em solid black; 
   }

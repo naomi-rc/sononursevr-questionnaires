@@ -13,6 +13,7 @@ function Home() {
   const [id, setId] =  useLocalStorage('ID', '0'); 
   const [trial, setTrial] =  useLocalStorage('trial', '0');
   const [usePairwise, setUsePairwise] =  useLocalStorage('usePairwise', "true"); 
+  const [allowSummary, setAllowSummary] =  useLocalStorage('allowSummary', "true"); 
 
 
   const validateInput = () => {
@@ -88,6 +89,11 @@ function Home() {
         <div className="inputData">
           <label>Use Pairwise Comparisons for NASA-TLX:</label>
           <input type="checkbox" checked={usePairwise==="true"} required onChange={(e) => setUsePairwise(e.target.checked.toString())} />
+        </div>
+
+        <div className="inputData">
+          <label>Allow summary and response modification for NASA-TLX:</label>
+          <input type="checkbox" checked={allowSummary==="true"} required onChange={(e) => setAllowSummary(e.target.checked.toString())} />
         </div>
 
         <br/>

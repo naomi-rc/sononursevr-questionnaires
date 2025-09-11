@@ -210,7 +210,7 @@ const Presence = () => {
                         </tr>
                         <tr>
                           {[...Array(8)].map((_, s) => (
-                            <td key={s}>
+                            <td key={s} className={`presenceLabelAlign${s}`}>
                               {(s===1) && q.lower}
                               {(s===4) && q.middle}
                               {(s===7) && q.upper}

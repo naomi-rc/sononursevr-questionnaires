@@ -50,7 +50,7 @@ const Presence_FR = {
     }, 
     "6" : 
     {
-      "question" : "Dans quelle mesure vos sens étaient-ils trompés par le réalisme du mouvement des objets à travers l'espace?",
+      "question" : "Dans quelle mesure vos sens étaient-ils convaincus par le réalisme du mouvement des objets à travers l'espace?",
       "lower" : "PAS DU TOUT",
       "middle" : "MODÉRÉMENT TROMPÉS",
       "upper" : "TRÈS TROMPÉS"
@@ -78,7 +78,7 @@ const Presence_FR = {
     }, 
     "10" : 
     {
-      "question" : "Jusqu'à quel point la sensation de déplacement à l'intérieur de l'environnement virtuel était-elle confondante (réaliste)?",
+      "question" : "Jusqu'à quel point la sensation de déplacement à l'intérieur de l'environnement virtuel était-elle convaincante (réaliste)?",
       "lower" : "PAS CONFONDANTE",
       "middle" : "MODÉRÉMENT CONFONDANTE",
       "upper" : "TRÈS CONFONDANTE"
@@ -127,7 +127,7 @@ const Presence_FR = {
     }, 
     "17" : 
     {
-      "question" : "Jusqu'à quel point la qualité visuelle de l'appareillage graphique vous a-t-elle incommodé(e) dans l'exécution des tâches requises?",
+      "question" : "Jusqu'à quel point la qualité visuelle de l'expérience vous a-t-elle incommodé(e) dans l'exécution des tâches requises?",
       "lower" : "PAS DU TOUT",
       "middle" : "ASSEZ INCOMMODÉ(E)",
       "upper" : "TÂCHES COMPLÈTEMENT EMPÊCHÉES"
