@@ -15,7 +15,7 @@ const NASATLX_EN = {
     
     "pairwiseInstructions" : "You'll now be presented with a series of pairs of rating scale factors; each pair will appear on a separate screen.",
     "pairwiseInstructionsContinued" : "For each pair, choose the factor that was more important to your experience of the workload in the task that you recently performed.",
-    "tapFactorPrompt" : "Tap the factor below that represents the more important contributor to workload for the psecific task that you recently performed.",
+    "tapFactorPrompt" : "Tap the factor below that represents the more important contributor to workload for the specific task that you recently performed.",
     
     "ratingScales1" : "You'll now be presented with a series of rating scales.",
     "ratingScales2" : "For each of the six scales, evaluate the task you recently performed by tapping on the scale's location that matches your experience. Each line has two endpoint descriptors that describe the scale.",
