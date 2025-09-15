@@ -161,7 +161,7 @@ function NASATLX() {
   }
 
   const stringResponses = (responses : Record<string, number | null>) => {
-    return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, value === null? "0" : value.toString()]));
+    return Object.fromEntries(Object.entries(responses).map(([key, value]) => [key, (value === null || value === undefined)? "0" : value.toString()]));
   }
 
   const roundedResponses = (responses : Record<string, number | null>) => {
