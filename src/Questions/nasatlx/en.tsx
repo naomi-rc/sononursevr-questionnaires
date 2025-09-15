@@ -68,7 +68,7 @@ const NASATLX_EN = {
 
     "P" : 
     {
-      "name" : "Peformance", 
+      "name" : "Performance", 
       "definition" : "How successful do you think you were in accomplishing the goals of the task set by the experimenter (or yourself)? How satisfied were you with your performance in accomplishing these goals?", 
       "question" : "How successful do you think you were in accomplishing the goals of the task?",
       "reference" : "This refers to how successful you thought you were in accomplishing the goals of the task set by the experimenter (or yourself) and how satisfied you were with your peformance in accomplishing these goals.",
